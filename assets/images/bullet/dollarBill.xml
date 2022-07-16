@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="dollarBill.png">
+<!--  Created with Adobe Animate version 21.0.6.41649  -->
+<!--  http://www.adobe.com/products/animate.html  -->
+<SubTexture name="dollar bill particle0000" x="11" y="11" width="132" height="89" frameX="0" frameY="0" frameWidth="134" frameHeight="89"/>
+<SubTexture name="dollar bill particle0001" x="11" y="11" width="132" height="89" frameX="0" frameY="0" frameWidth="134" frameHeight="89"/>
+<SubTexture name="dollar bill particle0002" x="184" y="11" width="132" height="88" frameX="-1" frameY="-1" frameWidth="134" frameHeight="89"/>
+<SubTexture name="dollar bill particle0003" x="184" y="11" width="132" height="88" frameX="-1" frameY="-1" frameWidth="134" frameHeight="89"/>
+<SubTexture name="dollar bill particle0004" x="357" y="11" width="131" height="85" frameX="-3" frameY="-4" frameWidth="134" frameHeight="89"/>
+<SubTexture name="dollar bill particle0005" x="357" y="11" width="131" height="85" frameX="-3" frameY="-4" frameWidth="134" frameHeight="89"/>
+</TextureAtlas>

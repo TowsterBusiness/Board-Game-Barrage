@@ -52,6 +52,7 @@ class PlayState extends FlxState
 	{
 		backgroundCreate();
 
+		destroySubStates = false;
 		pauseMenu = new PauseSubState(0xB7676767);
 
 		playerBullets = new FlxTypedSpriteGroup(0, 0, 9999);

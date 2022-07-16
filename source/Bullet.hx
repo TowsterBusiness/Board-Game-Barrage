@@ -52,7 +52,11 @@ class Bullet extends Sprite
 			case 1:
 				if (tick > 300)
 					kill();
-				x -= someInput;
+
+				if (x > 1800)
+					x -= 0;
+				else
+					x -= someInput;
 			case 1001:
 				x += 20;
 				removeIfOffscreen();

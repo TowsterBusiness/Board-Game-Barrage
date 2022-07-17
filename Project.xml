@@ -36,6 +36,8 @@
 
 	<haxelib name="flixel" />
 
+	<icon path="iconOG.png" />
+
 	<!-- <haxelib name="flixel-addons" /> -->
 
 	<!--In case you want to use the ui package-->

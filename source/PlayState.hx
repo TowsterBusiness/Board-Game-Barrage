@@ -72,6 +72,8 @@ class PlayState extends FlxState
 
 	var healthBar:FlxSprite;
 
+	var hitbox:FlxSprite;
+
 	override public function create()
 	{
 		FlxG.camera.bgColor = 0xFFE382;
@@ -131,11 +133,20 @@ class PlayState extends FlxState
 				mainChar.addOffset('dead', 80, 65);
 				mainChar.addOffset('attack', 80, 65);
 		}
+
 		mainChar.playAnim('idle');
 		mainChar.scale.set(0.4, 0.4);
 		mainChar.updateHitbox();
 		mainChar.screenCenter(Y);
 		add(mainChar);
+
+		hitbox = new FlxSprite(mainChar.x, mainChar.y).loadGraphic(Paths.getFilePath('images/hitbox.png'));
+		hitbox.setGraphicSize(25, 25);
+		hitbox.updateHitbox();
+		hitbox.x = mainChar.x + mainChar.width / 2 - hitbox.width / 2;
+		hitbox.y = mainChar.y + mainChar.height / 2 - hitbox.height / 2;
+		add(hitbox);
+		FlxTween.tween(hitbox, {alpha: 0}, 1, {ease: FlxEase.cubeOut, startDelay: 2});
 
 		bullets = new FlxTypedSpriteGroup(0, 0, 9999);
 		add(bullets);
@@ -210,6 +221,8 @@ class PlayState extends FlxState
 		movement();
 		backgroundUpdate();
 
+		if (bossHealth < 0 && (FlxG.mouse.justPressed || FlxG.keys.justPressed.ENTER))
+			FlxG.switchState(new TitleState());
 		trace(winScreen.x + ' ' + winScreen.y);
 
 		if (FlxG.keys.justPressed.P)
@@ -373,6 +386,8 @@ class PlayState extends FlxState
 		}
 		else
 		{
+			hitbox.x += veloX;
+			hitbox.y += veloY;
 			mainChar.x += veloX;
 			mainChar.y += veloY;
 		}
@@ -526,7 +541,7 @@ class PlayState extends FlxState
 						case 0:
 							bullets.add(new Bullet(1400, Math.random() * 850 + 25, 1, Math.random() * 10 + 5));
 						case 2:
-							if (cashOffset % 100 == 0)
+							if (cashOffset % 50 == 0)
 							{
 								bullets.add(new Bullet(Math.random() * 1280, 900, 3));
 							}
@@ -553,7 +568,7 @@ class PlayState extends FlxState
 		bullets.forEachAlive(function(bullet)
 		{
 			bullet.move();
-			if (bullet.overlaps(mainChar))
+			if (bullet.overlaps(hitbox))
 			{
 				if (bullet.bulletType != 3)
 					bullet.kill();

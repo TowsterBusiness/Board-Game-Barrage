@@ -1,20 +1,35 @@
 package;
 
+import towsterFlxUtil.Paths;
 import flixel.FlxSprite;
 import flixel.FlxG;
 
 class BruhButton extends FlxSprite
 { // run update functions
-	var imagePath:String;
-	var pressedImagePath:String;
+	public var spriteId:String;
 
-	public function new(x:Float, y:Float, imagePath:String, pressedImagePath:String, ?scale1:Float)
+	public function new(x:Float, y:Float, spriteId:String, ?scale1:Float)
 	{
 		super(x, y);
-		this.imagePath = imagePath;
-		this.pressedImagePath = pressedImagePath;
-		loadGraphic(imagePath);
-		scale.set(scale1, scale1);
+		this.spriteId = spriteId;
+		switch (spriteId)
+		{
+			case 'play' | 'credits':
+				loadGraphic(Paths.getFilePath('images/titleScreen/TitleScreenButtons.png'), true, 1000, 600);
+				animation.add('credits-color', [0], 1, true);
+				animation.add('play-color', [1], 1, true);
+				animation.add('credits-gray', [2], 1, true);
+				animation.add('play-gray', [3], 1, true);
+			case 'resume' | 'mainMenu':
+				loadGraphic(Paths.getFilePath('images/PauseMenu.png'), true, 1000, 600);
+				animation.add('resume-gray', [0], 1, true);
+				animation.add('resume-color', [1], 1, true);
+				animation.add('mainMenu-color', [2], 1, true);
+				animation.add('mainMenu-gray', [3], 1, true);
+		}
+		animation.play(spriteId + '-gray');
+
+		setGraphicSize(Math.floor(1000 * scale1), Math.floor(600 * scale1));
 		updateHitbox();
 	}
 
@@ -24,11 +39,11 @@ class BruhButton extends FlxSprite
 		{
 			if (FlxG.mouse.overlaps(this))
 			{
-				loadGraphic(imagePath);
+				animation.play(spriteId + '-color');
 			}
 			else
 			{
-				loadGraphic(pressedImagePath);
+				animation.play(spriteId + '-gray');
 			}
 		}
 

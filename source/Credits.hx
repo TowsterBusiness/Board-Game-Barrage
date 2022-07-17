@@ -82,7 +82,7 @@ class Credits extends FlxState
 
 		var creditNames = ['Pierogii', 'Nopieal', 'Maple', 'Lua', 'Nightmare', 'Jay', 'Towster'];
 
-		for (i in 0...12)
+		for (i in 0...8)
 		{
 			var icon:CreditIcon = new CreditIcon(55 + (i % 3) * 400, 128 + (Math.floor(i / 3) * 122), creditNames[i], twitterLinks[i]);
 			var text:FlxSprite = new FlxSprite(164 + (i % 3) * 400,
@@ -107,19 +107,9 @@ class Credits extends FlxState
 			}
 		});
 
-		FlxTween.tween(arrowLeft, {y: 593}, 1, {
-			ease: FlxEase.quadOut,
-			startDelay: 1.2,
-		});
-
 		FlxTween.tween(creditsText, {y: 605}, 1, {
 			ease: FlxEase.quadOut,
 			startDelay: 1.3,
-		});
-
-		FlxTween.tween(arrowRight, {y: 593}, 1, {
-			ease: FlxEase.quadOut,
-			startDelay: 1.4,
 		});
 
 		FlxTween.tween(panelTop, {y: 0}, 1, {
@@ -173,6 +163,9 @@ class Credits extends FlxState
 
 	override function update(elapsed:Float)
 	{
+		if (FlxG.keys.anyJustPressed([ESCAPE, Q]))
+			outTransition();
+
 		for (i in creditsPage1)
 		{
 			if (FlxG.mouse.overlaps(i))
@@ -190,57 +183,13 @@ class Credits extends FlxState
 		}
 	}
 
-	function changePage(change:Int = 0):Void
-	{
-		canDoStuff = false;
-		var prevPage = curPage;
-		curPage += change;
-		if (curPage < 0)
-		{
-			curPage = 0;
-			canDoStuff = true;
-		}
-		else if (curPage > 1)
-		{
-			curPage = 2;
-			canDoStuff = true;
-		}
-		if (prevPage != curPage)
-		{
-			for (i in creditsPage1)
-			{
-				FlxTween.tween(i, {x: i.x + FlxG.width * -change}, 1, {
-					ease: FlxEase.quadOut,
-				});
-			}
-			for (i in textPage1)
-			{
-				FlxTween.tween(i, {x: i.x + FlxG.width * -change}, 1, {
-					ease: FlxEase.quadOut,
-					onComplete: function(twn:FlxTween)
-					{
-						canDoStuff = true;
-					},
-				});
-			}
-		}
-	}
-
 	function outTransition():Void
 	{
 		canDoStuff = false;
-		FlxTween.tween(arrowLeft, {y: 973}, 1, {
-			ease: FlxEase.quadOut,
-		});
 
 		FlxTween.tween(creditsText, {y: 1005}, 1, {
 			ease: FlxEase.quadOut,
 			startDelay: 0.1,
-		});
-
-		FlxTween.tween(arrowRight, {y: 973}, 1, {
-			ease: FlxEase.quadOut,
-			startDelay: 0.2,
 		});
 
 		FlxTween.tween(panelTop, {y: -500}, 1, {
@@ -256,8 +205,7 @@ class Credits extends FlxState
 			startDelay: 0.6,
 			onComplete: function(twn:FlxTween)
 			{
-				// FlxG.switchState(new MainMenuState());
-				trace('fix this');
+				FlxG.switchState(new TitleState());
 			}
 		});
 

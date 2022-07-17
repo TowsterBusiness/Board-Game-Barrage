@@ -34,16 +34,37 @@ class Bullet extends Sprite
 				animation.addByPrefix('idle', 'coin particle0', 24, true);
 				playAnim('idle');
 				setGraphicSize(30, 30);
+			case 3:
+				super(x, y);
+				loadGraphic(Paths.getFilePath('images/bullet/houseMissile.png'));
+
+			case 4:
+				super(x, y);
+				loadGraphic(Paths.getFilePath('images/bullet/diamond.png'));
+				setGraphicSize(60, 60);
+				angle = 94;
 			case 1001:
-				super(x, y, 'bullet/dollarBill');
-				animation.addByPrefix('idle', 'dollar bill particle0', 24, true);
+				super(x, y, 'bullet/plus_2_card_particle');
+				animation.addByPrefix('idle', 'plus 2 card particle0', 24, true);
 				playAnim('idle');
 				setGraphicSize(25, 25);
+			case 1002:
+				super(x, y, 'bullet/skip_card_particle');
+				animation.addByPrefix('idle', 'skip card particle0', 24, true);
+				playAnim('idle');
+				setGraphicSize(25, 25);
+			case 1003:
+				super(x, y, 'bullet/reverse_card_particle');
+				animation.addByPrefix('idle', 'reverse card particle0', 24, true);
+				playAnim('idle');
+				setGraphicSize(75, 75);
 		}
 		updateHitbox();
 	}
 
-	public function move()
+	var reverseCardDir:Float = 25;
+
+	public function move(?moveInput:Dynamic)
 	{
 		tick++;
 		switch (bulletType)
@@ -63,24 +84,44 @@ class Bullet extends Sprite
 				else
 					x -= someInput;
 			case 2:
-				var d = 6; // distance
-
-				switch (someInput)
-				{
-					case 0: y += d;
-					case 1: y -= d;
-					case 2: x += d;
-				}
+				var d = 12; // distance
+				x += d * Math.sin(someInput);
+				y += d * Math.cos(someInput);
+				if (y < -500)
+					kill();
+			case 3:
+				if (tick > 300)
+					y -= (tick - 300) * 2;
+				else
+					y = 720 - tick / 4;
 				removeIfOffscreen();
+			case 4:
+				x -= 13;
+				if (x < -300)
+					kill();
 			case 1001:
 				x += 20;
 				removeIfOffscreen();
+			case 1002:
+				x -= 10;
+
+				if (alpha <= 0)
+					kill();
+				if (tick > 20)
+					alpha = 1 - (tick / 30) + 0.2;
+				if (x < 0)
+					x = 1280;
+			case 1003:
+				var d = 10; // distance
+
+				x += d * Math.sin(someInput / 180 * 3.14);
+				y += d * Math.cos(someInput / 180 * 3.14);
 		}
 	}
 
 	function removeIfOffscreen()
 	{
-		if (x > 2000 || x < -100 || y > 1000 || y < -100)
+		if (x > 1500 || x < -200 || y > 1000 || y < -200)
 		{
 			kill();
 			return;

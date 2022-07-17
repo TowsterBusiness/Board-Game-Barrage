@@ -1,5 +1,6 @@
 package;
 
+import flixel.system.FlxSound;
 import PauseSubState;
 import flixel.FlxBasic;
 import flixel.FlxG;
@@ -41,27 +42,59 @@ class PlayState extends FlxState
 	var bossMan:Sprite;
 	var bossHealth:Int = 1000;
 	var playerHealth:Int = 1000;
-
-	// 1001 = basic Bullet
-	var bulletType:Int = 0;
-	// 0 = cat & terry
-	var playerType:Int = 0;
 	var bulletTimer:towsterFlxUtil.Timer;
 	var bullets:FlxTypedSpriteGroup<Bullet>;
 
-	var playerBulletType:Int = 0;
+	var dice:Sprite;
+	var diceAnimation:Sprite;
+
+	var bulletType:Int = 0;
+	// 0 = cat & terry
+	var playerType:Int = 2;
+	var reverseCardDir:Float = 25;
+
+	// 1001 = basic Bullet
+	// 1001 = reverse Bullet
+	var playerBulletType:Int = -1;
 	var playerBulletTimer:towsterFlxUtil.Timer;
 	var playerBullets:FlxTypedSpriteGroup<Bullet>;
 
 	var cashOffset:Int = 0;
+	var bulletOffset:Int = 0;
+	var randomDiamondY:Float = 0;
+
+	var onAttacks:Array<Bool> = [false, false, false, false, false];
+
+	var winScreen:FlxSprite;
+	var BG1Overlay:FlxSprite;
+	var gameOverSprite:FlxSprite;
+	var retryButton:FlxSprite;
+
+	var shootSound:FlxSound;
+	var bigShootSound:FlxSound;
+
+	var HealthBar:FlxSprite;
 
 	override public function create()
 	{
+		FlxG.camera.bgColor = 0xFFE382;
 		backgroundCreate();
 
+		FlxG.sound.playMusic('assets/music/BOARD_BLASTIN_-_BATTLE.ogg', 0.5, true);
+
+		shootSound = FlxG.sound.load('assets/music/Basic_Shooter.ogg', 0.3, false);
+		bigShootSound = FlxG.sound.load('assets/music/Power_Shooter.ogg', 0.3, false);
 		FlxG.autoPause = false;
 		destroySubStates = false;
 		pauseMenu = new PauseSubState(0xB7676767);
+
+		FlxG.camera.alpha = 0;
+		FlxTween.tween(FlxG.camera, {alpha: 1}, 1, {
+			ease: FlxEase.sineIn,
+			onComplete: (x) -> {
+				//
+			}
+		});
 
 		playerType = FloatingVarables.characterType;
 
@@ -90,6 +123,16 @@ class PlayState extends FlxState
 				mainChar.addOffset('hurt', 80, 65);
 				mainChar.addOffset('dead', 80, 65);
 				mainChar.addOffset('attack', 80, 65);
+			case 2:
+				mainChar = new Sprite(100, 0, 'characters/lolli');
+				mainChar.animation.addByPrefix('idle', 'lolli idle0', 24);
+				mainChar.animation.addByPrefix('attack', 'lolli attack0', 24, false);
+				mainChar.animation.addByPrefix('dead', 'lolli dead0', 24);
+				mainChar.animation.addByPrefix('hurt', 'lolli hurt0', 24, false);
+				mainChar.addOffset('idle', 80, 65);
+				mainChar.addOffset('hurt', 80, 65);
+				mainChar.addOffset('dead', 80, 65);
+				mainChar.addOffset('attack', 80, 65);
 		}
 		mainChar.playAnim('idle');
 		mainChar.scale.set(0.4, 0.4);
@@ -100,16 +143,22 @@ class PlayState extends FlxState
 		bullets = new FlxTypedSpriteGroup(0, 0, 9999);
 		add(bullets);
 
+		dice = new Sprite(700, 0, 'bullet/dice_particle');
+		dice.animation.addByPrefix('idle', 'dice particle0', 24, true);
+		dice.playAnim('idle');
+		dice.screenCenter(Y);
+		add(dice);
+
 		bossMan = new Sprite(1000, 300, 'characters/monopolyMan');
 		bossMan.animation.addByPrefix('idle', 'monopoly man idle0', 24);
 		bossMan.animation.addByPrefix('attack', 'monopoly man attack0', 24, false);
 		bossMan.animation.addByPrefix('dead', 'monopoly man dead0', 24);
-		bossMan.animation.addByPrefix('head', 'monopoly man hurt0', 24, false);
+		bossMan.animation.addByPrefix('hurt', 'monopoly man hurt0', 24, false);
 
 		bossMan.addOffset('idle', 200, 130);
 		bossMan.addOffset('attack', 200, 130);
 		bossMan.addOffset('dead', 200, 150);
-		bossMan.addOffset('head', 200, 130);
+		bossMan.addOffset('hurt', 200, 130);
 
 		bossMan.scale.set(0.5, 0.5);
 		bossMan.updateHitbox();
@@ -117,8 +166,39 @@ class PlayState extends FlxState
 		add(bossMan);
 		bossMan.playAnim('idle');
 
+		diceAnimation = new Sprite(1250, -60, 'bullet/dice');
+		diceAnimation.scale.set(0.5, 0.5);
+		diceAnimation.animation.addByPrefix('mid-air', 'dice drop no text0', 24, false);
+		diceAnimation.animation.addByPrefix('drop', 'dice roll0', 24, false);
+		diceAnimation.animation.addByPrefix('0', 'dice result 10', 24, false);
+		diceAnimation.animation.addByPrefix('1', 'dice result 20', 24, false);
+		diceAnimation.animation.addByPrefix('2', 'dice result 30', 24, false);
+		diceAnimation.animation.addByPrefix('3', 'dice result 40', 24, false);
+		diceAnimation.animation.addByPrefix('4', 'dice result 50', 24, false);
+		diceAnimation.animation.addByPrefix('5', 'dice result 60', 24, false);
+		diceAnimation.updateHitbox();
+		diceAnimation.playAnim('mid-air');
+		add(diceAnimation);
+
 		bulletTimer = new towsterFlxUtil.Timer(400);
-		playerBulletTimer = new towsterFlxUtil.Timer(100);
+		playerBulletTimer = new towsterFlxUtil.Timer(200);
+
+		// winScreen = new FlxSprite(0, -768).loadGraphic(Paths.getFilePath('images/winScreen/winscreen' + playerType, PNG));
+		// winScreen.setGraphicSize(1024, 768);
+		// add(winScreen);
+
+		gameOverSprite = new FlxSprite(0, -50).loadGraphic(Paths.getFilePath('images/gameover.png'));
+		gameOverSprite.screenCenter(X);
+		gameOverSprite.scale.set(0.8, 0.8);
+		gameOverSprite.alpha = 0;
+		add(gameOverSprite);
+
+		retryButton = new FlxSprite(550, 433).loadGraphic(Paths.getFilePath('images/retry.png'));
+
+		retryButton.scale.set(0.4, 0.4);
+		retryButton.updateHitbox();
+		retryButton.alpha = 0;
+		add(retryButton);
 
 		super.create();
 	}
@@ -126,16 +206,9 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float)
 	{
 		movement();
-
 		backgroundUpdate();
-		if (FlxG.keys.justPressed.J)
-			mainChar.playAnim('idle');
-		if (FlxG.keys.justPressed.K)
-			mainChar.playAnim('dead');
-		if (FlxG.keys.justPressed.L)
-			mainChar.playAnim('attack');
-		if (FlxG.keys.justPressed.I)
-			mainChar.playAnim('hurt');
+
+		isShooting = FlxG.keys.checkStatus(SPACE, PRESSED);
 
 		if (mainChar.animation.finished)
 		{
@@ -149,90 +222,162 @@ class PlayState extends FlxState
 			}
 		}
 
+		if (bossMan.animation.finished)
+		{
+			bossMan.playAnim('idle');
+		}
+
 		bulletTimer.timer += elapsed;
 		playerBulletTimer.timer += elapsed;
 
-		if (bulletTimer.justPassed())
+		bossBulletShit();
+		playerBulletShit();
+
+		if (bossHealth % Math.floor(200) == 0)
+			spawnDice();
+
+		if (FlxG.mouse.justPressed && FlxG.mouse.overlaps(retryButton) && retryButton.alpha != 0)
 		{
-			if (bulletType < 3)
-			{
-				cashOffset += 10;
-				for (i in 0...10)
+			FlxTween.tween(FlxG.camera, {alpha: 0}, 1, {
+				ease: FlxEase.quadIn,
+				onComplete: (x) ->
 				{
-					bullets.add(new Bullet(bossMan.x + 25, bossMan.y + 140, 0, i * 72 + cashOffset));
+					FlxG.switchState(new PlayState());
 				}
+			});
+		}
 
-				bullets.add(new Bullet(1400, Math.random() * 850 + 25, 1, Math.random() * 10 + 5));
+		if (dice.overlaps(mainChar) && dice.alpha == 1)
+		{
+			FlxTween.tween(dice, {alpha: 0}, 1, {ease: FlxEase.quadIn});
+			diceRoll();
+		}
 
-				bullets.forEachAlive(function(bullet)
-				{
-					if (bullet.bulletType == 1 && Math.random() * 10 < 5)
+		if (diceAnimation.animation.finished && diceAnimation.animation.curAnim.name == 'drop')
+		{
+			var avalableAttacks = [];
+			for (i in 0...6)
+			{
+				if (!onAttacks[i])
+					avalableAttacks.push(i);
+			}
+			var rand = avalableAttacks[Math.floor(Math.random() * avalableAttacks.length)];
+			diceAnimation.playAnim('' + rand);
+			onAttacks[rand] = true;
+			playerBulletType = rand % 3;
+		}
+
+		if (FlxG.keys.justPressed.COMMA)
+		{
+			spawnDice();
+		}
+		if (FlxG.keys.justPressed.SEMICOLON)
+		{
+			gameOver();
+		}
+		if (FlxG.keys.justPressed.PERIOD)
+		{
+			winState();
+		}
+
+		super.update(elapsed);
+	}
+
+	function spawnDice()
+	{
+		playerBulletType = -1;
+		bossHealth--;
+		FlxTween.tween(dice, {alpha: 1}, 1);
+	}
+
+	function gameOver()
+	{
+		mainChar.playAnim('dead');
+		FlxG.camera.alpha = 1;
+		FlxTween.tween(retryButton, {alpha: 1}, 1, {ease: FlxEase.quartInOut});
+		FlxTween.tween(gameOverSprite, {alpha: 1}, 1, {ease: FlxEase.quartInOut});
+	}
+
+	function winState() {}
+
+	function damagePlayer(amount:Int)
+	{
+		playerHealth -= amount;
+		mainChar.playAnim('hurt');
+	}
+
+	function damageBoss(amount:Int)
+	{
+		bossHealth -= amount;
+		bossMan.playAnim('hurt');
+	}
+
+	function diceRoll()
+	{
+		FlxTween.tween(diceAnimation, {x: 975}, 0.5, {
+			ease: FlxEase.quadIn,
+			onComplete: (x) ->
+			{
+				diceAnimation.playAnim('drop');
+				FlxTween.tween(diceAnimation, {x: 1250}, 0.5, {
+					ease: FlxEase.quadOut,
+					startDelay: 3,
+					onComplete: (y) ->
 					{
-						if (hardMode)
-						{
-							for (i in 0...2)
-							{
-								bullets.add(new Bullet(bullet.x, bullet.y + 25, 2, i));
-							}
-						}
-						else
-						{
-							bullets.add(new Bullet(bullet.x, bullet.y + 25, 2, 2));
-						}
+						diceAnimation.playAnim('mid-air');
 					}
 				});
 			}
+		});
+	}
+
+	var veloX:Float;
+	var veloY:Float;
+
+	function movement()
+	{
+		var walkSpeed:Float = 2;
+		var maxWS:Float = 6;
+
+		var friction:Float = 1.5;
+		veloX /= friction;
+		veloY /= friction;
+
+		if ((FlxG.keys.anyPressed([W, UP])) && mainChar.y > -20)
+			veloY -= walkSpeed;
+		if ((FlxG.keys.anyPressed([D, RIGHT])) && mainChar.x < 1240)
+			veloX += walkSpeed;
+
+		if ((FlxG.keys.anyPressed([A, LEFT])) && mainChar.x > -20)
+			veloX -= walkSpeed;
+		if ((FlxG.keys.anyPressed([S, DOWN])) && mainChar.y < 680)
+			veloY += walkSpeed;
+
+		if (veloX > maxWS)
+			veloX = maxWS;
+		if (veloY > maxWS)
+			veloY = maxWS;
+
+		if (FlxG.keys.anyJustPressed([W, UP, S, DOWN]) && FlxG.keys.anyJustPressed([A, RIGHT, D, LEFT]))
+		{
+			mainChar.x += Math.sin(3.14 / 180 * 45) * veloX;
+			mainChar.y += Math.sin(3.14 / 180 * 45) * veloY;
+		}
+		else
+		{
+			mainChar.x += veloX;
+			mainChar.y += veloY;
 		}
 
-		bullets.forEachAlive(function(bullet)
-		{
-			bullet.move();
-			if (bullet.overlaps(mainChar))
-			{
-				damagePlayer(1);
-			}
-		});
-
-		bullets.forEachDead(function(bullet)
-		{
-			bullets.remove(bullet);
-		});
-
-		/**  ****************
-		 *   *****PLAYER*****
-		 * . ****************
-		**/
-		if (playerBulletTimer.justPassed())
-		{
-			switch (playerBulletType)
-			{
-				case 0:
-					playerBullets.add(new Bullet(mainChar.x + 17, mainChar.y + 17, 1001));
-			}
-		}
-
-		playerBullets.forEachAlive(function(bullet)
-		{
-			bullet.move();
-			if (bullet.overlaps(bossMan))
-			{
-				bullet.kill();
-				damageBoss(1);
-			}
-		});
-
-		playerBullets.forEachDead(function(bullet)
-		{
-			playerBullets.remove(bullet);
-		});
-
-		super.update(elapsed);
+		mainChar.angle = veloX / maxWS * 25;
 	}
 
 	override function onFocusLost()
 	{
 		pause();
 	}
+
+	function loseBullets() {}
 
 	function pause()
 	{
@@ -242,7 +387,7 @@ class PlayState extends FlxState
 	function backgroundCreate()
 	{
 		BG1 = new FlxSprite(0, 0).loadGraphic(Paths.getFilePath('images/background/bg7', PNG));
-		BG1.setGraphicSize(2000, 1000);
+		BG1.setGraphicSize(2000, 2000);
 		BG1.screenCenter(XY);
 		add(BG1);
 		BG2 = new FlxSprite(0, 0).loadGraphic(Paths.getFilePath('images/background/bg2', PNG));
@@ -251,23 +396,23 @@ class PlayState extends FlxState
 		add(BG22);
 		BG3 = new FlxSprite(0, 120).loadGraphic(Paths.getFilePath('images/background/bg1', PNG));
 		add(BG3);
-		BG32 = new FlxSprite(3200, 120).loadGraphic(Paths.getFilePath('images/background/bg1', PNG));
+		BG32 = new FlxSprite(3200, 0).loadGraphic(Paths.getFilePath('images/background/bg1', PNG));
 		add(BG32);
-		BG4 = new FlxSprite(0, 120).loadGraphic(Paths.getFilePath('images/background/bg6', PNG));
+		BG4 = new FlxSprite(0, 0).loadGraphic(Paths.getFilePath('images/background/bg6', PNG));
 		add(BG4);
-		BG42 = new FlxSprite(3200, 120).loadGraphic(Paths.getFilePath('images/background/bg6', PNG));
+		BG42 = new FlxSprite(3200, 0).loadGraphic(Paths.getFilePath('images/background/bg6', PNG));
 		add(BG42);
 		BG5 = new FlxSprite(0, 120).loadGraphic(Paths.getFilePath('images/background/bg5', PNG));
 		add(BG5);
-		BG52 = new FlxSprite(3200, 120).loadGraphic(Paths.getFilePath('images/background/bg5', PNG));
+		BG52 = new FlxSprite(3200, 0).loadGraphic(Paths.getFilePath('images/background/bg5', PNG));
 		add(BG52);
-		BG6 = new FlxSprite(0, 120).loadGraphic(Paths.getFilePath('images/background/bg4', PNG));
+		BG6 = new FlxSprite(0, 0).loadGraphic(Paths.getFilePath('images/background/bg4', PNG));
 		add(BG6);
-		BG62 = new FlxSprite(3200, 120).loadGraphic(Paths.getFilePath('images/background/bg4', PNG));
+		BG62 = new FlxSprite(3200, 0).loadGraphic(Paths.getFilePath('images/background/bg4', PNG));
 		add(BG62);
-		BG7 = new FlxSprite(0, 120).loadGraphic(Paths.getFilePath('images/background/bg3', PNG));
+		BG7 = new FlxSprite(0, 0).loadGraphic(Paths.getFilePath('images/background/bg3', PNG));
 		add(BG7);
-		BG72 = new FlxSprite(3200, 120).loadGraphic(Paths.getFilePath('images/background/bg3', PNG));
+		BG72 = new FlxSprite(3200, 0).loadGraphic(Paths.getFilePath('images/background/bg3', PNG));
 		add(BG72);
 	}
 
@@ -312,76 +457,99 @@ class PlayState extends FlxState
 			BG72.x = BG7.x + 3200;
 	}
 
-	function damagePlayer(amount:Int)
+	function playerBulletShit()
 	{
-		playerHealth -= amount;
-		mainChar.playAnim('hurt');
+		if (playerBulletTimer.justPassed() && isShooting)
+		{
+			switch (playerBulletType)
+			{
+				case 0:
+					shootSound.play();
+					playerBullets.add(new Bullet(mainChar.x + 17, mainChar.y + 17, 1001));
+				case 1:
+					shootSound.play();
+					playerBullets.add(new Bullet(mainChar.x + 17, mainChar.y + 17, 1002));
+				case 2:
+					bigShootSound.play();
+					if (bulletOffset % 4 == 0)
+						playerBullets.add(new Bullet(mainChar.x + 17, mainChar.y + 17, 1003, reverseCardDir));
+					bulletOffset++;
+			}
+		}
+
+		playerBullets.forEachAlive(function(bullet)
+		{
+			bullet.move();
+			if (bullet.overlaps(bossMan))
+			{
+				reverseCardDir = Math.random() * 70 - 270 - 35;
+
+				bullet.kill();
+				damageBoss(1);
+			}
+		});
+
+		playerBullets.forEachDead(function(bullet)
+		{
+			playerBullets.remove(bullet);
+		});
 	}
 
-	function damageBoss(amount:Int)
+	function bossBulletShit()
 	{
-		bossHealth -= amount;
-	}
-
-	function movement()
-	{
-		var walkSpeed:Float = 6;
-		var diagWS:Float = 4.24264;
-		if (FlxG.keys.anyJustPressed([W, UP, A, S, D, DOWN, RIGHT, LEFT]))
+		if (bulletTimer.justPassed())
 		{
-			walkSpeed = 5;
-			diagWS = 3.53553;
+			cashOffset += 10;
+			for (atlen in 0...onAttacks.length)
+			{
+				if (onAttacks[atlen])
+				{
+					switch (atlen)
+					{
+						case 1:
+							for (i in 0...6)
+							{
+								bullets.add(new Bullet(bossMan.x + 25, bossMan.y + 140, 0, i * 72 + cashOffset));
+							}
+						case 0:
+							bullets.add(new Bullet(1400, Math.random() * 850 + 25, 1, Math.random() * 10 + 5));
+						case 2:
+							if (cashOffset % 100 == 0)
+							{
+								bullets.add(new Bullet(Math.random() * 1280, 900, 3));
+							}
+						case 3:
+							if (cashOffset % 20 == 0)
+							{
+								bullets.add(new Bullet(bossMan.x + 25, bossMan.y + 140, 2,
+									Math.atan2(mainChar.x - bossMan.x + 25.0, mainChar.y - bossMan.y + 140.0) - 0.32));
+							}
+						case 4:
+							if (cashOffset % 40 == 0)
+							{
+								randomDiamondY = Math.random() * 900 + 30;
+								for (i in 2...10)
+								{
+									bullets.add(new Bullet(i * 70 + 1280, randomDiamondY, 4));
+								}
+							}
+					}
+				}
+			}
 		}
 
-		walkSpeed += 0.1;
-		diagWS += 0.0388909;
+		bullets.forEachAlive(function(bullet)
+		{
+			bullet.move();
+			if (bullet.overlaps(mainChar))
+			{
+				damagePlayer(1);
+			}
+		});
 
-		if (walkSpeed > 6)
-			walkSpeed = 6;
-		if (diagWS > 4.24264)
-			diagWS = 4.24264;
-
-		if ((FlxG.keys.pressed.W || FlxG.keys.pressed.UP) && mainChar.y > 0)
+		bullets.forEachDead(function(bullet)
 		{
-			if ((FlxG.keys.pressed.D || FlxG.keys.pressed.RIGHT) && mainChar.x < 1380)
-			{
-				mainChar.x += diagWS;
-				mainChar.y -= diagWS;
-			}
-			else if ((FlxG.keys.pressed.A || FlxG.keys.pressed.LEFT) && mainChar.x > -20)
-			{
-				mainChar.x -= diagWS;
-				mainChar.y -= diagWS;
-			}
-			else
-			{
-				mainChar.y -= walkSpeed;
-			}
-		}
-		else if ((FlxG.keys.pressed.S || FlxG.keys.pressed.DOWN) && mainChar.y < 800)
-		{
-			if ((FlxG.keys.pressed.D || FlxG.keys.pressed.RIGHT) && mainChar.x < 1380)
-			{
-				mainChar.x += diagWS;
-				mainChar.y += diagWS;
-			}
-			else if ((FlxG.keys.pressed.A || FlxG.keys.pressed.LEFT) && mainChar.x > -20)
-			{
-				mainChar.x -= diagWS;
-				mainChar.y += diagWS;
-			}
-			else
-			{
-				mainChar.y += walkSpeed;
-			}
-		}
-		else if ((FlxG.keys.pressed.D || FlxG.keys.pressed.RIGHT) && mainChar.x < 1380)
-		{
-			mainChar.x += walkSpeed;
-		}
-		else if ((FlxG.keys.pressed.A || FlxG.keys.pressed.LEFT) && mainChar.x > -20)
-		{
-			mainChar.x -= walkSpeed;
-		}
+			bullets.remove(bullet);
+		});
 	}
 }

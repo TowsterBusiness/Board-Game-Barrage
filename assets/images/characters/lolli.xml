@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="lolli.png">
+	<!-- Created with Adobe Animate version 21.0.6.41649 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="lolli attack0000" x="0" y="0" width="227" height="218" frameX="-13" frameY="-5" frameWidth="240" frameHeight="223"/>
+	<SubTexture name="lolli attack0001" x="0" y="0" width="227" height="218" frameX="-13" frameY="-5" frameWidth="240" frameHeight="223"/>
+	<SubTexture name="lolli attack0002" x="227" y="0" width="231" height="221" frameX="0" frameY="-1" frameWidth="240" frameHeight="223"/>
+	<SubTexture name="lolli attack0003" x="227" y="0" width="231" height="221" frameX="0" frameY="-1" frameWidth="240" frameHeight="223"/>
+	<SubTexture name="lolli attack0004" x="458" y="0" width="228" height="208" frameX="-4" frameY="0" frameWidth="240" frameHeight="223"/>
+	<SubTexture name="lolli attack0005" x="458" y="0" width="228" height="208" frameX="-4" frameY="0" frameWidth="240" frameHeight="223"/>
+	<SubTexture name="lolli attack0006" x="0" y="0" width="227" height="218" frameX="-13" frameY="-4" frameWidth="240" frameHeight="223"/>
+	<SubTexture name="lolli attack0007" x="0" y="0" width="227" height="218" frameX="-13" frameY="-4" frameWidth="240" frameHeight="223"/>
+	<SubTexture name="lolli attack0008" x="686" y="0" width="231" height="222" frameX="0" frameY="0" frameWidth="240" frameHeight="223"/>
+	<SubTexture name="lolli attack0009" x="686" y="0" width="231" height="222" frameX="0" frameY="0" frameWidth="240" frameHeight="223"/>
+	<SubTexture name="lolli attack0010" x="458" y="0" width="228" height="208" frameX="-4" frameY="-1" frameWidth="240" frameHeight="223"/>
+	<SubTexture name="lolli attack0011" x="458" y="0" width="228" height="208" frameX="-4" frameY="-1" frameWidth="240" frameHeight="223"/>
+	<SubTexture name="lolli dead0000" x="917" y="0" width="221" height="194" frameX="0" frameY="-2" frameWidth="221" frameHeight="199"/>
+	<SubTexture name="lolli dead0001" x="917" y="0" width="221" height="194" frameX="0" frameY="-2" frameWidth="221" frameHeight="199"/>
+	<SubTexture name="lolli dead0002" x="1138" y="0" width="221" height="194" frameX="0" frameY="-3" frameWidth="221" frameHeight="199"/>
+	<SubTexture name="lolli dead0003" x="1138" y="0" width="221" height="194" frameX="0" frameY="-3" frameWidth="221" frameHeight="199"/>
+	<SubTexture name="lolli dead0004" x="1359" y="0" width="221" height="193" frameX="0" frameY="-6" frameWidth="221" frameHeight="199"/>
+	<SubTexture name="lolli dead0005" x="1359" y="0" width="221" height="193" frameX="0" frameY="-6" frameWidth="221" frameHeight="199"/>
+	<SubTexture name="lolli dead0006" x="1580" y="0" width="221" height="189" frameX="0" frameY="-10" frameWidth="221" frameHeight="199"/>
+	<SubTexture name="lolli dead0007" x="1580" y="0" width="221" height="189" frameX="0" frameY="-10" frameWidth="221" frameHeight="199"/>
+	<SubTexture name="lolli dead0008" x="1801" y="0" width="221" height="191" frameX="0" frameY="-6" frameWidth="221" frameHeight="199"/>
+	<SubTexture name="lolli dead0009" x="1801" y="0" width="221" height="191" frameX="0" frameY="-6" frameWidth="221" frameHeight="199"/>
+	<SubTexture name="lolli dead0010" x="0" y="222" width="221" height="196" frameX="0" frameY="0" frameWidth="221" frameHeight="199"/>
+	<SubTexture name="lolli dead0011" x="0" y="222" width="221" height="196" frameX="0" frameY="0" frameWidth="221" frameHeight="199"/>
+	<SubTexture name="lolli hurt0000" x="221" y="222" width="250" height="225" frameX="0" frameY="0" frameWidth="254" frameHeight="229"/>
+	<SubTexture name="lolli hurt0001" x="471" y="222" width="239" height="211" frameX="-11" frameY="-14" frameWidth="254" frameHeight="229"/>
+	<SubTexture name="lolli hurt0002" x="710" y="222" width="232" height="76" frameX="-22" frameY="-127" frameWidth="254" frameHeight="229"/>
+	<SubTexture name="lolli hurt0003" x="942" y="222" width="246" height="223" frameX="-8" frameY="-3" frameWidth="254" frameHeight="229"/>
+	<SubTexture name="lolli hurt0004" x="1188" y="222" width="243" height="220" frameX="-11" frameY="-9" frameWidth="254" frameHeight="229"/>
+	<SubTexture name="lolli hurt0005" x="1431" y="222" width="250" height="226" frameX="0" frameY="-3" frameWidth="254" frameHeight="229"/>
+	<SubTexture name="lolli hurt0006" x="471" y="222" width="239" height="211" frameX="-11" frameY="-15" frameWidth="254" frameHeight="229"/>
+	<SubTexture name="lolli hurt0007" x="710" y="222" width="232" height="76" frameX="-22" frameY="-127" frameWidth="254" frameHeight="229"/>
+	<SubTexture name="lolli hurt0008" x="942" y="222" width="246" height="223" frameX="-8" frameY="-3" frameWidth="254" frameHeight="229"/>
+	<SubTexture name="lolli hurt0009" x="1188" y="222" width="243" height="220" frameX="-11" frameY="-5" frameWidth="254" frameHeight="229"/>
+	<SubTexture name="lolli idle0000" x="1681" y="222" width="230" height="214" frameX="-3" frameY="-5" frameWidth="233" frameHeight="219"/>
+	<SubTexture name="lolli idle0001" x="1681" y="222" width="230" height="214" frameX="-3" frameY="-5" frameWidth="233" frameHeight="219"/>
+	<SubTexture name="lolli idle0002" x="0" y="448" width="229" height="214" frameX="-4" frameY="-1" frameWidth="233" frameHeight="219"/>
+	<SubTexture name="lolli idle0003" x="0" y="448" width="229" height="214" frameX="-4" frameY="-1" frameWidth="233" frameHeight="219"/>
+	<SubTexture name="lolli idle0004" x="229" y="448" width="233" height="214" frameX="0" frameY="0" frameWidth="233" frameHeight="219"/>
+	<SubTexture name="lolli idle0005" x="229" y="448" width="233" height="214" frameX="0" frameY="0" frameWidth="233" frameHeight="219"/>
+	<SubTexture name="lolli idle0006" x="1681" y="222" width="230" height="214" frameX="-3" frameY="0" frameWidth="233" frameHeight="219"/>
+	<SubTexture name="lolli idle0007" x="1681" y="222" width="230" height="214" frameX="-3" frameY="0" frameWidth="233" frameHeight="219"/>
+	<SubTexture name="lolli idle0008" x="0" y="448" width="229" height="214" frameX="-4" frameY="-1" frameWidth="233" frameHeight="219"/>
+	<SubTexture name="lolli idle0009" x="0" y="448" width="229" height="214" frameX="-4" frameY="-1" frameWidth="233" frameHeight="219"/>
+	<SubTexture name="lolli idle0010" x="229" y="448" width="233" height="214" frameX="0" frameY="-3" frameWidth="233" frameHeight="219"/>
+	<SubTexture name="lolli idle0011" x="229" y="448" width="233" height="214" frameX="0" frameY="-3" frameWidth="233" frameHeight="219"/>
+</TextureAtlas>

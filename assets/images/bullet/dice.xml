@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="dice.png">
+	<!-- Created with Adobe Animate version 21.0.6.41649 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="dice drop no text0000" x="1556" y="847" width="389" height="386"/>
+	<SubTexture name="dice drop no text0001" x="1556" y="847" width="389" height="386"/>
+	<SubTexture name="dice drop no text0002" x="1556" y="847" width="389" height="386"/>
+	<SubTexture name="dice drop no text0003" x="1556" y="847" width="389" height="386"/>
+	<SubTexture name="dice drop no text0004" x="1556" y="847" width="389" height="386"/>
+	<SubTexture name="dice drop no text0005" x="1556" y="847" width="389" height="386"/>
+	<SubTexture name="dice drop no text0006" x="1556" y="847" width="389" height="386"/>
+	<SubTexture name="dice drop no text0007" x="1556" y="847" width="389" height="386"/>
+	<SubTexture name="dice drop text0000" x="0" y="0" width="389" height="461"/>
+	<SubTexture name="dice drop text0001" x="0" y="0" width="389" height="461"/>
+	<SubTexture name="dice drop text0002" x="0" y="0" width="389" height="461"/>
+	<SubTexture name="dice drop text0003" x="0" y="0" width="389" height="461"/>
+	<SubTexture name="dice drop text0004" x="0" y="0" width="389" height="461"/>
+	<SubTexture name="dice drop text0005" x="0" y="0" width="389" height="461"/>
+	<SubTexture name="dice drop text0006" x="389" y="0" width="389" height="461"/>
+	<SubTexture name="dice drop text0007" x="389" y="0" width="389" height="461"/>
+	<SubTexture name="dice drop text0008" x="1556" y="847" width="389" height="386" frameX="0" frameY="-75" frameWidth="389" frameHeight="386"/>
+	<SubTexture name="dice drop text0009" x="1556" y="847" width="389" height="386" frameX="0" frameY="-75" frameWidth="389" frameHeight="386"/>
+	<SubTexture name="dice drop text0010" x="389" y="0" width="389" height="461"/>
+	<SubTexture name="dice drop text0011" x="389" y="0" width="389" height="461"/>
+	<SubTexture name="dice result 10000" x="778" y="0" width="389" height="386"/>
+	<SubTexture name="dice result 10001" x="778" y="0" width="389" height="386"/>
+	<SubTexture name="dice result 10002" x="1167" y="0" width="389" height="386"/>
+	<SubTexture name="dice result 10003" x="1167" y="0" width="389" height="386"/>
+	<SubTexture name="dice result 10004" x="1167" y="0" width="389" height="386"/>
+	<SubTexture name="dice result 10005" x="1167" y="0" width="389" height="386"/>
+	<SubTexture name="dice result 10006" x="1167" y="0" width="389" height="386"/>
+	<SubTexture name="dice result 20000" x="1556" y="0" width="389" height="386"/>
+	<SubTexture name="dice result 20001" x="1556" y="0" width="389" height="386"/>
+	<SubTexture name="dice result 20002" x="0" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 20003" x="0" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 20004" x="0" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 20005" x="0" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 20006" x="0" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 30000" x="389" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 30001" x="389" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 30002" x="778" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 30003" x="778" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 30004" x="778" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 30005" x="778" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 30006" x="778" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 40000" x="1167" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 40001" x="1167" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 40002" x="1556" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 40003" x="1556" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 40004" x="1556" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 40005" x="1556" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 40006" x="1556" y="461" width="389" height="386"/>
+	<SubTexture name="dice result 50000" x="0" y="847" width="389" height="386"/>
+	<SubTexture name="dice result 50001" x="0" y="847" width="389" height="386"/>
+	<SubTexture name="dice result 50002" x="389" y="847" width="389" height="386"/>
+	<SubTexture name="dice result 50003" x="389" y="847" width="389" height="386"/>
+	<SubTexture name="dice result 50004" x="389" y="847" width="389" height="386"/>
+	<SubTexture name="dice result 50005" x="389" y="847" width="389" height="386"/>
+	<SubTexture name="dice result 50006" x="389" y="847" width="389" height="386"/>
+	<SubTexture name="dice result 60000" x="778" y="847" width="389" height="386"/>
+	<SubTexture name="dice result 60001" x="778" y="847" width="389" height="386"/>
+	<SubTexture name="dice result 60002" x="1167" y="847" width="389" height="386"/>
+	<SubTexture name="dice result 60003" x="1167" y="847" width="389" height="386"/>
+	<SubTexture name="dice result 60004" x="1167" y="847" width="389" height="386"/>
+	<SubTexture name="dice result 60005" x="1167" y="847" width="389" height="386"/>
+	<SubTexture name="dice result 60006" x="1167" y="847" width="389" height="386"/>
+	<SubTexture name="dice roll0000" x="1556" y="847" width="389" height="386"/>
+	<SubTexture name="dice roll0001" x="1556" y="847" width="389" height="386"/>
+	<SubTexture name="dice roll0002" x="0" y="1233" width="389" height="386"/>
+	<SubTexture name="dice roll0003" x="0" y="1233" width="389" height="386"/>
+	<SubTexture name="dice roll0004" x="389" y="1233" width="389" height="386"/>
+	<SubTexture name="dice roll0005" x="389" y="1233" width="389" height="386"/>
+	<SubTexture name="dice roll0006" x="778" y="1233" width="389" height="386"/>
+	<SubTexture name="dice roll0007" x="778" y="1233" width="389" height="386"/>
+	<SubTexture name="dice roll0008" x="1167" y="1233" width="389" height="386"/>
+	<SubTexture name="dice roll0009" x="1167" y="1233" width="389" height="386"/>
+	<SubTexture name="dice roll0010" x="1556" y="1233" width="389" height="386"/>
+	<SubTexture name="dice roll0011" x="1556" y="1233" width="389" height="386"/>
+	<SubTexture name="dice roll0012" x="0" y="1619" width="389" height="386"/>
+	<SubTexture name="dice roll0013" x="0" y="1619" width="389" height="386"/>
+	<SubTexture name="dice roll0014" x="389" y="1619" width="389" height="386"/>
+	<SubTexture name="dice roll0015" x="389" y="1619" width="389" height="386"/>
+	<SubTexture name="dice roll0016" x="778" y="1619" width="389" height="386"/>
+	<SubTexture name="dice roll0017" x="778" y="1619" width="389" height="386"/>
+	<SubTexture name="dice roll0018" x="1167" y="1619" width="389" height="386"/>
+	<SubTexture name="dice roll0019" x="1167" y="1619" width="389" height="386"/>
+	<SubTexture name="dice roll0020" x="778" y="1233" width="389" height="386"/>
+	<SubTexture name="dice roll0021" x="778" y="1233" width="389" height="386"/>
+	<SubTexture name="dice roll0022" x="1167" y="1233" width="389" height="386"/>
+	<SubTexture name="dice roll0023" x="1167" y="1233" width="389" height="386"/>
+	<SubTexture name="dice roll0024" x="1556" y="1233" width="389" height="386"/>
+	<SubTexture name="dice roll0025" x="1556" y="1233" width="389" height="386"/>
+	<SubTexture name="dice roll0026" x="0" y="1619" width="389" height="386"/>
+	<SubTexture name="dice roll0027" x="0" y="1619" width="389" height="386"/>
+	<SubTexture name="dice roll0028" x="389" y="1619" width="389" height="386"/>
+	<SubTexture name="dice roll0029" x="389" y="1619" width="389" height="386"/>
+	<SubTexture name="dice roll0030" x="778" y="1619" width="389" height="386"/>
+	<SubTexture name="dice roll0031" x="778" y="1619" width="389" height="386"/>
+	<SubTexture name="dice roll0032" x="1167" y="1619" width="389" height="386"/>
+	<SubTexture name="dice roll0033" x="1167" y="1619" width="389" height="386"/>
+</TextureAtlas>

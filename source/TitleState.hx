@@ -1,5 +1,8 @@
 package;
 
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.FlxG;
 import towsterFlxUtil.Paths;
 import flixel.FlxState;
 import flixel.FlxSprite;
@@ -7,6 +10,7 @@ import flixel.FlxSprite;
 class TitleState extends FlxState
 {
 	var BG1:FlxSprite;
+
 	var BG2:FlxSprite;
 	var BG3:FlxSprite;
 	var BG4:FlxSprite;
@@ -20,32 +24,66 @@ class TitleState extends FlxState
 	var BG62:FlxSprite;
 	var BG72:FlxSprite;
 
+	var transitionBox:FlxSprite;
+
 	var playButton:BruhButton;
 	var creditsButton:BruhButton;
-
+	var titleText:FlxSprite;
 	var maxPanning:Int = 20;
 
 	public override function create()
 	{
 		super.create();
+
+		FlxG.sound.playMusic('assets/music/BOARD_BLASTIN_-_TITLE.ogg', 0.5, true);
+
+		FlxG.camera.alpha = 0;
+		FlxTween.tween(FlxG.camera, {alpha: 1}, 1.5, {
+			ease: FlxEase.sineIn,
+			onComplete: (x) -> {
+				//
+			}
+		});
+
 		backgroundCreate();
 
-		playButton = new BruhButton(0, 200, Paths.getFilePath('images/titleScreen/playb2', PNG), Paths.getFilePath('images/titleScreen/playb1', PNG), 0.4);
-		creditsButton = new BruhButton(300, 200, Paths.getFilePath('images/titleScreen/creditsb2', PNG),
-			Paths.getFilePath('images/titleScreen/creditsb1', PNG), 0.4);
+		transitionBox = new FlxSprite(0, 950).loadGraphic(Paths.getFilePath('images/playerSelect/unknown.png'));
+
+		titleText = new FlxSprite(200, -30).loadGraphic(Paths.getFilePath('images/titleScreen/logo.png'));
+		titleText.setGraphicSize(666, 400);
+
+		playButton = new BruhButton(760, 450, 'play', 0.4);
+		creditsButton = new BruhButton(220, 450, 'credits', 0.4);
 
 		playButton.screenCenter(X);
 		creditsButton.screenCenter(X);
+		playButton.x -= 270;
+		creditsButton.x += 270;
 
 		add(playButton);
 		add(creditsButton);
+		add(titleText);
+		add(transitionBox);
 	}
 
 	public override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		if (playButton.updateButton()) {}
-		if (creditsButton.updateButton()) {}
+		if (playButton.updateButton())
+		{
+			FlxTween.tween(transitionBox, {y: -200}, 0.5, {
+				ease: FlxEase.quadIn,
+				onComplete: (x) ->
+				{
+					FlxG.switchState(new PlayerSelect());
+				}
+			});
+		}
+		if (creditsButton.updateButton())
+		{
+			// Doesn't work lmao
+			// FlxG.switchState(new Credits());
+		}
 
 		backgroundUpdate();
 	}

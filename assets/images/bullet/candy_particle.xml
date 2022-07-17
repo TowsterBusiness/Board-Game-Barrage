@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="candy_particle.png">
+	<!-- Created with Adobe Animate version 21.0.6.41649 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="candy particle0000" x="0" y="0" width="144" height="61" frameX="-1" frameY="0" frameWidth="145" frameHeight="61"/>
+	<SubTexture name="candy particle0001" x="0" y="0" width="144" height="61" frameX="-1" frameY="0" frameWidth="145" frameHeight="61"/>
+	<SubTexture name="candy particle0002" x="0" y="61" width="145" height="55" frameX="0" frameY="0" frameWidth="145" frameHeight="61"/>
+	<SubTexture name="candy particle0003" x="0" y="61" width="145" height="55" frameX="0" frameY="0" frameWidth="145" frameHeight="61"/>
+	<SubTexture name="candy particle0004" x="0" y="116" width="144" height="57" frameX="0" frameY="0" frameWidth="145" frameHeight="61"/>
+	<SubTexture name="candy particle0005" x="0" y="116" width="144" height="57" frameX="0" frameY="0" frameWidth="145" frameHeight="61"/>
+</TextureAtlas>

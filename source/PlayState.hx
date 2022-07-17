@@ -40,7 +40,8 @@ class PlayState extends FlxState
 	var mainChar:Sprite;
 
 	var bossMan:Sprite;
-	var bossHealth:Int = 100;
+	var bossMaxHealth:Int = 200;
+	var bossHealth:Int = 2;
 	var playerHealth:Int = 100;
 	var bulletTimer:towsterFlxUtil.Timer;
 	var bullets:FlxTypedSpriteGroup<Bullet>;
@@ -141,7 +142,7 @@ class PlayState extends FlxState
 		add(mainChar);
 
 		hitbox = new FlxSprite(mainChar.x, mainChar.y).loadGraphic(Paths.getFilePath('images/hitbox.png'));
-		hitbox.setGraphicSize(25, 25);
+		hitbox.setGraphicSize(40, 40);
 		hitbox.updateHitbox();
 		hitbox.x = mainChar.x + mainChar.width / 2 - hitbox.width / 2;
 		hitbox.y = mainChar.y + mainChar.height / 2 - hitbox.height / 2;
@@ -195,17 +196,10 @@ class PlayState extends FlxState
 		healthBar = new FlxSprite(-76, 19);
 		healthBar.frames = Paths.getAnimation('healthBar/hp_bar' + playerType);
 		healthBar.scale.set(0.8, 0.8);
-		healthBar.animation.addByIndices('0', 'healthBar0', [99], '', 24, true);
-		healthBar.animation.addByIndices('10', 'healthBar0', [89], '', 24, true);
-		healthBar.animation.addByIndices('20', 'healthBar0', [79], '', 24, true);
-		healthBar.animation.addByIndices('30', 'healthBar0', [69], '', 24, true);
-		healthBar.animation.addByIndices('40', 'healthBar0', [59], '', 24, true);
-		healthBar.animation.addByIndices('50', 'healthBar0', [49], '', 24, true);
-		healthBar.animation.addByIndices('60', 'healthBar0', [39], '', 24, true);
-		healthBar.animation.addByIndices('70', 'healthBar0', [29], '', 24, true);
-		healthBar.animation.addByIndices('80', 'healthBar0', [19], '', 24, true);
-		healthBar.animation.addByIndices('90', 'healthBar0', [9], '', 24, true);
-		healthBar.animation.addByIndices('100', 'healthBar0', [0], '', 24, true);
+		for (i in 0...100)
+		{
+			healthBar.animation.addByIndices(i + '', 'healthBar0', [99 - i], '', 24, true);
+		}
 		healthBar.animation.play('100');
 		add(healthBar);
 
@@ -570,9 +564,20 @@ class PlayState extends FlxState
 			bullet.move();
 			if (bullet.overlaps(hitbox))
 			{
-				if (bullet.bulletType != 3)
+				if (bullet.bulletType == 3)
+				{
+					damagePlayer(2);
+				}
+				else if (bullet.bulletType == 4)
+				{
 					bullet.kill();
-				damagePlayer(10);
+					damagePlayer(2);
+				}
+				else
+				{
+					kill();
+					damagePlayer(10);
+				}
 			}
 		});
 

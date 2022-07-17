@@ -21,6 +21,8 @@ class PlayerSelect extends FlxState
 
 	override public function create()
 	{
+		FlxG.sound.playMusic('assets/music/Board_Blastin_-_Menu_Selection.ogg', 0.5, true);
+
 		BG = new FlxSprite(0, 0).loadGraphic(Paths.getFilePath('images/playerSelect/unknown.png'));
 		add(BG);
 
@@ -88,6 +90,7 @@ class PlayerSelect extends FlxState
 
 		if (FlxG.keys.anyJustPressed([ENTER]) && characterPointer <= 2)
 		{
+			FlxG.sound.load('assets/music/Board_Blastin_-_Menu_Selection.ogg', 0.5, false).play();
 			FloatingVarables.characterType = characterPointer;
 			FlxTween.tween(FlxG.camera, {zoom: 20, alpha: 0}, 1.5, {
 				ease: FlxEase.sineIn,

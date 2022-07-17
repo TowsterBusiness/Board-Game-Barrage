@@ -41,7 +41,7 @@ class PlayState extends FlxState
 
 	var bossMan:Sprite;
 	var bossHealth:Int = 100;
-	var playerHealth:Int = 1000;
+	var playerHealth:Int = 100;
 	var bulletTimer:towsterFlxUtil.Timer;
 	var bullets:FlxTypedSpriteGroup<Bullet>;
 
@@ -179,13 +179,28 @@ class PlayState extends FlxState
 		add(diceAnimation);
 
 		bulletTimer = new towsterFlxUtil.Timer(400);
-		playerBulletTimer = new towsterFlxUtil.Timer(200);
+		playerBulletTimer = new towsterFlxUtil.Timer(350);
 
-		// winScreen = new FlxSprite(0, -768).loadGraphic(Paths.getFilePath('images/winScreen/winscreen' + playerType, PNG));
-		// winScreen.setGraphicSize(1024, 768);
-		// add(winScreen);
+		healthBar = new FlxSprite(-76, 19);
+		healthBar.frames = Paths.getAnimation('healthBar/hp_bar' + playerType);
+		healthBar.scale.set(0.8, 0.8);
+		healthBar.animation.addByIndices('0', 'healthBar0', [99], '', 24, true);
+		healthBar.animation.addByIndices('10', 'healthBar0', [89], '', 24, true);
+		healthBar.animation.addByIndices('20', 'healthBar0', [79], '', 24, true);
+		healthBar.animation.addByIndices('30', 'healthBar0', [69], '', 24, true);
+		healthBar.animation.addByIndices('40', 'healthBar0', [59], '', 24, true);
+		healthBar.animation.addByIndices('50', 'healthBar0', [49], '', 24, true);
+		healthBar.animation.addByIndices('60', 'healthBar0', [39], '', 24, true);
+		healthBar.animation.addByIndices('70', 'healthBar0', [29], '', 24, true);
+		healthBar.animation.addByIndices('80', 'healthBar0', [19], '', 24, true);
+		healthBar.animation.addByIndices('90', 'healthBar0', [9], '', 24, true);
+		healthBar.animation.addByIndices('100', 'healthBar0', [0], '', 24, true);
+		healthBar.animation.play('100');
+		add(healthBar);
 
-		healthBar = new FlxSprite(0, 0).loadGraphic(Paths.getFilePath('hp_bar' + playerType, PNG));
+		winScreen = new FlxSprite(-200, -1400).loadGraphic(Paths.getFilePath('images/winScreen/win' + playerType, PNG));
+		winScreen.setGraphicSize(1024, 768);
+		add(winScreen);
 
 		super.create();
 	}
@@ -195,7 +210,7 @@ class PlayState extends FlxState
 		movement();
 		backgroundUpdate();
 
-		trace(healthBar.x + ' ' + healthBar.y);
+		trace(winScreen.x + ' ' + winScreen.y);
 
 		if (FlxG.keys.justPressed.P)
 			pause();
@@ -225,7 +240,7 @@ class PlayState extends FlxState
 		bossBulletShit();
 		playerBulletShit();
 
-		if (bossHealth % Math.floor(200) == 0)
+		if (bossHealth % Math.floor(20) == 0)
 			spawnDice();
 
 		if (dice.overlaps(mainChar) && dice.alpha == 1)
@@ -274,14 +289,29 @@ class PlayState extends FlxState
 	function gameOver()
 	{
 		mainChar.playAnim('dead');
+		var GO:GameOverSubState = new GameOverSubState();
+		openSubState(GO);
 	}
 
-	function winState() {}
+	function winState()
+	{
+		bossMan.playAnim('dead');
+		FlxTween.tween(bullets, {y: -720}, 3, {ease: FlxEase.quartOut});
+		FlxTween.tween(winScreen, {y: -480}, 1, {ease: FlxEase.quartIn});
+	}
 
 	function damagePlayer(amount:Int)
 	{
 		playerHealth -= amount;
-		mainChar.playAnim('hurt');
+		if (playerHealth >= 0)
+		{
+			healthBar.animation.play(playerHealth + '');
+			mainChar.playAnim('hurt');
+		}
+		else
+		{
+			gameOver();
+		}
 	}
 
 	function damageBoss(amount:Int)
@@ -450,9 +480,11 @@ class PlayState extends FlxState
 					playerBullets.add(new Bullet(mainChar.x + 17, mainChar.y + 17, 1002, 2));
 					playerBullets.add(new Bullet(mainChar.x + 17, mainChar.y + 17, 1002, 3));
 				case 2:
-					bigShootSound.play();
-					if (bulletOffset % 4 == 0)
+					if (bulletOffset % 2 == 0)
+					{
+						bigShootSound.play();
 						playerBullets.add(new Bullet(mainChar.x + 17, mainChar.y + 17, 1003, reverseCardDir));
+					}
 					bulletOffset++;
 			}
 		}
@@ -523,7 +555,9 @@ class PlayState extends FlxState
 			bullet.move();
 			if (bullet.overlaps(mainChar))
 			{
-				damagePlayer(1);
+				if (bullet.bulletType != 3)
+					bullet.kill();
+				damagePlayer(10);
 			}
 		});
 

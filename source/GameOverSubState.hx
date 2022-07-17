@@ -7,7 +7,7 @@ import flixel.tweens.FlxEase;
 import flixel.FlxG;
 import flixel.FlxSubState;
 
-class PauseSubState extends FlxSubState
+class GameOverSubState extends FlxSubState
 {
 	var gameOverSprite:FlxSprite;
 	var retryButton:FlxSprite;

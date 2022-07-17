@@ -40,7 +40,7 @@ class PlayState extends FlxState
 	var mainChar:Sprite;
 
 	var bossMan:Sprite;
-	var bossHealth:Int = 1000;
+	var bossHealth:Int = 100;
 	var playerHealth:Int = 1000;
 	var bulletTimer:towsterFlxUtil.Timer;
 	var bullets:FlxTypedSpriteGroup<Bullet>;
@@ -66,14 +66,11 @@ class PlayState extends FlxState
 	var onAttacks:Array<Bool> = [false, false, false, false, false];
 
 	var winScreen:FlxSprite;
-	var BG1Overlay:FlxSprite;
-	var gameOverSprite:FlxSprite;
-	var retryButton:FlxSprite;
 
 	var shootSound:FlxSound;
 	var bigShootSound:FlxSound;
 
-	var HealthBar:FlxSprite;
+	var healthBar:FlxSprite;
 
 	override public function create()
 	{
@@ -162,6 +159,7 @@ class PlayState extends FlxState
 
 		bossMan.scale.set(0.5, 0.5);
 		bossMan.updateHitbox();
+		// bossMan.getHitbox = new Rect
 		bossMan.screenCenter(Y);
 		add(bossMan);
 		bossMan.playAnim('idle');
@@ -187,18 +185,7 @@ class PlayState extends FlxState
 		// winScreen.setGraphicSize(1024, 768);
 		// add(winScreen);
 
-		gameOverSprite = new FlxSprite(0, -50).loadGraphic(Paths.getFilePath('images/gameover.png'));
-		gameOverSprite.screenCenter(X);
-		gameOverSprite.scale.set(0.8, 0.8);
-		gameOverSprite.alpha = 0;
-		add(gameOverSprite);
-
-		retryButton = new FlxSprite(550, 433).loadGraphic(Paths.getFilePath('images/retry.png'));
-
-		retryButton.scale.set(0.4, 0.4);
-		retryButton.updateHitbox();
-		retryButton.alpha = 0;
-		add(retryButton);
+		healthBar = new FlxSprite(0, 0).loadGraphic(Paths.getFilePath('hp_bar' + playerType, PNG));
 
 		super.create();
 	}
@@ -207,6 +194,11 @@ class PlayState extends FlxState
 	{
 		movement();
 		backgroundUpdate();
+
+		trace(healthBar.x + ' ' + healthBar.y);
+
+		if (FlxG.keys.justPressed.P)
+			pause();
 
 		isShooting = FlxG.keys.checkStatus(SPACE, PRESSED);
 
@@ -235,17 +227,6 @@ class PlayState extends FlxState
 
 		if (bossHealth % Math.floor(200) == 0)
 			spawnDice();
-
-		if (FlxG.mouse.justPressed && FlxG.mouse.overlaps(retryButton) && retryButton.alpha != 0)
-		{
-			FlxTween.tween(FlxG.camera, {alpha: 0}, 1, {
-				ease: FlxEase.quadIn,
-				onComplete: (x) ->
-				{
-					FlxG.switchState(new PlayState());
-				}
-			});
-		}
 
 		if (dice.overlaps(mainChar) && dice.alpha == 1)
 		{
@@ -293,9 +274,6 @@ class PlayState extends FlxState
 	function gameOver()
 	{
 		mainChar.playAnim('dead');
-		FlxG.camera.alpha = 1;
-		FlxTween.tween(retryButton, {alpha: 1}, 1, {ease: FlxEase.quartInOut});
-		FlxTween.tween(gameOverSprite, {alpha: 1}, 1, {ease: FlxEase.quartInOut});
 	}
 
 	function winState() {}
@@ -468,7 +446,9 @@ class PlayState extends FlxState
 					playerBullets.add(new Bullet(mainChar.x + 17, mainChar.y + 17, 1001));
 				case 1:
 					shootSound.play();
-					playerBullets.add(new Bullet(mainChar.x + 17, mainChar.y + 17, 1002));
+					playerBullets.add(new Bullet(mainChar.x + 17, mainChar.y + 17, 1002, 1));
+					playerBullets.add(new Bullet(mainChar.x + 17, mainChar.y + 17, 1002, 2));
+					playerBullets.add(new Bullet(mainChar.x + 17, mainChar.y + 17, 1002, 3));
 				case 2:
 					bigShootSound.play();
 					if (bulletOffset % 4 == 0)

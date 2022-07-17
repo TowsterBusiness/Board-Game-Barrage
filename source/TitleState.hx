@@ -49,19 +49,16 @@ class TitleState extends FlxState
 
 		transitionBox = new FlxSprite(0, 950).loadGraphic(Paths.getFilePath('images/playerSelect/unknown.png'));
 
-		titleText = new FlxSprite(200, -30).loadGraphic(Paths.getFilePath('images/titleScreen/logo.png'));
+		titleText = new FlxSprite(200, -60).loadGraphic(Paths.getFilePath('images/titleScreen/logo.png'));
 		titleText.setGraphicSize(666, 400);
+		titleText.screenCenter(X);
 
 		playButton = new BruhButton(760, 450, 'play', 0.4);
 		creditsButton = new BruhButton(220, 450, 'credits', 0.4);
 
 		playButton.screenCenter(X);
-		creditsButton.screenCenter(X);
-		playButton.x -= 270;
-		creditsButton.x += 270;
 
 		add(playButton);
-		add(creditsButton);
 		add(titleText);
 		add(transitionBox);
 	}

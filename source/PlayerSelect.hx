@@ -78,6 +78,19 @@ class PlayerSelect extends FlxState
 			}
 		}
 
+		if (FlxG.keys.anyJustPressed([ENTER]) && characterPointer <= 1)
+		{
+			FloatingVarables.characterType = characterPointer;
+			FlxTween.tween(FlxG.camera, {zoom: 20}, 1.5, {
+				ease: FlxEase.sineIn,
+				onComplete: (x) ->
+				{
+					FlxG.camera.alpha = 0;
+					FlxG.switchState(new PlayState());
+				}
+			});
+		}
+
 		super.update(elapsed);
 	}
 }

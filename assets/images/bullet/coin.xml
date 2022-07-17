@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="coin.png">
+	<!-- Created with Adobe Animate version 21.0.6.41649 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="coin particle0000" x="11" y="11" width="28" height="67" frameX="-21" frameY="-2" frameWidth="69" frameHeight="69"/>
+	<SubTexture name="coin particle0001" x="11" y="11" width="28" height="67" frameX="-21" frameY="-2" frameWidth="69" frameHeight="69"/>
+	<SubTexture name="coin particle0002" x="80" y="11" width="50" height="69" frameX="-7" frameY="0" frameWidth="69" frameHeight="69"/>
+	<SubTexture name="coin particle0003" x="171" y="11" width="69" height="66" frameX="0" frameY="-1" frameWidth="69" frameHeight="69"/>
+	<SubTexture name="coin particle0004" x="171" y="11" width="69" height="66" frameX="0" frameY="-1" frameWidth="69" frameHeight="69"/>
+	<SubTexture name="coin particle0005" x="11" y="121" width="52" height="69" frameX="-6" frameY="0" frameWidth="69" frameHeight="69"/>
+</TextureAtlas>

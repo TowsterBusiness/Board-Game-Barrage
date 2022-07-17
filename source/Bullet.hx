@@ -29,6 +29,11 @@ class Bullet extends Sprite
 				animation.addByPrefix('idle', 'money bag particle0', 24, true);
 				playAnim('idle');
 				setGraphicSize(100, 100);
+			case 2:
+				super(x, y, 'bullet/coin');
+				animation.addByPrefix('idle', 'coin particle0', 24, true);
+				playAnim('idle');
+				setGraphicSize(30, 30);
 			case 1001:
 				super(x, y, 'bullet/dollarBill');
 				animation.addByPrefix('idle', 'dollar bill particle0', 24, true);
@@ -46,8 +51,8 @@ class Bullet extends Sprite
 			case 0:
 				var d = 5; // distance
 
-				x += d * Math.sin(someInput);
-				y += d * Math.cos(someInput);
+				x += d * Math.sin(someInput / 180 * 3.14);
+				y += d * Math.cos(someInput / 180 * 3.14);
 				removeIfOffscreen();
 			case 1:
 				if (tick > 300)
@@ -57,6 +62,16 @@ class Bullet extends Sprite
 					x -= 0;
 				else
 					x -= someInput;
+			case 2:
+				var d = 6; // distance
+
+				switch (someInput)
+				{
+					case 0: y += d;
+					case 1: y -= d;
+					case 2: x += d;
+				}
+				removeIfOffscreen();
 			case 1001:
 				x += 20;
 				removeIfOffscreen();
@@ -65,7 +80,7 @@ class Bullet extends Sprite
 
 	function removeIfOffscreen()
 	{
-		if (x > 1280 || x < -100 || y > 920 || y < -100)
+		if (x > 2000 || x < -100 || y > 1000 || y < -100)
 		{
 			kill();
 			return;

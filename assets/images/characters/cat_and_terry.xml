@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="cat_and_terry.png">
+	<!-- Created with Adobe Animate version 21.0.6.41649 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="cat and terry attack0000" x="0" y="0" width="451" height="187" frameX="0" frameY="-2" frameWidth="482" frameHeight="189"/>
+	<SubTexture name="cat and terry attack0001" x="451" y="0" width="482" height="187" frameX="0" frameY="-2" frameWidth="482" frameHeight="189"/>
+	<SubTexture name="cat and terry attack0002" x="933" y="0" width="372" height="183" frameX="-6" frameY="0" frameWidth="482" frameHeight="189"/>
+	<SubTexture name="cat and terry attack0003" x="933" y="0" width="372" height="183" frameX="-6" frameY="0" frameWidth="482" frameHeight="189"/>
+	<SubTexture name="cat and terry attack0004" x="1305" y="0" width="451" height="187" frameX="0" frameY="-2" frameWidth="482" frameHeight="189"/>
+	<SubTexture name="cat and terry attack0005" x="0" y="187" width="482" height="187" frameX="0" frameY="-2" frameWidth="482" frameHeight="189"/>
+	<SubTexture name="cat and terry attack0006" x="482" y="187" width="372" height="183" frameX="-6" frameY="0" frameWidth="482" frameHeight="189"/>
+	<SubTexture name="cat and terry attack0007" x="482" y="187" width="372" height="183" frameX="-6" frameY="0" frameWidth="482" frameHeight="189"/>
+	<SubTexture name="cat and terry attack0008" x="854" y="187" width="451" height="187" frameX="0" frameY="-2" frameWidth="482" frameHeight="189"/>
+	<SubTexture name="cat and terry attack0009" x="1305" y="187" width="482" height="187" frameX="0" frameY="-2" frameWidth="482" frameHeight="189"/>
+	<SubTexture name="cat and terry attack0010" x="0" y="374" width="372" height="183" frameX="-6" frameY="0" frameWidth="482" frameHeight="189"/>
+	<SubTexture name="cat and terry attack0011" x="0" y="374" width="372" height="183" frameX="-6" frameY="0" frameWidth="482" frameHeight="189"/>
+	<SubTexture name="cat and terry dead0000" x="372" y="374" width="372" height="203" frameX="-4" frameY="-73" frameWidth="380" frameHeight="276"/>
+	<SubTexture name="cat and terry dead0001" x="372" y="374" width="372" height="203" frameX="-4" frameY="-73" frameWidth="380" frameHeight="276"/>
+	<SubTexture name="cat and terry dead0002" x="744" y="374" width="372" height="219" frameX="-8" frameY="-57" frameWidth="380" frameHeight="276"/>
+	<SubTexture name="cat and terry dead0003" x="744" y="374" width="372" height="219" frameX="-8" frameY="-57" frameWidth="380" frameHeight="276"/>
+	<SubTexture name="cat and terry dead0004" x="1116" y="374" width="372" height="272" frameX="0" frameY="0" frameWidth="380" frameHeight="276"/>
+	<SubTexture name="cat and terry dead0005" x="1116" y="374" width="372" height="272" frameX="0" frameY="0" frameWidth="380" frameHeight="276"/>
+	<SubTexture name="cat and terry dead0006" x="1488" y="374" width="372" height="272" frameX="-4" frameY="-4" frameWidth="380" frameHeight="276"/>
+	<SubTexture name="cat and terry dead0007" x="1488" y="374" width="372" height="272" frameX="-4" frameY="-4" frameWidth="380" frameHeight="276"/>
+	<SubTexture name="cat and terry dead0008" x="0" y="646" width="372" height="205" frameX="-4" frameY="-71" frameWidth="380" frameHeight="276"/>
+	<SubTexture name="cat and terry dead0009" x="0" y="646" width="372" height="205" frameX="-4" frameY="-71" frameWidth="380" frameHeight="276"/>
+	<SubTexture name="cat and terry dead0010" x="372" y="646" width="372" height="205" frameX="-4" frameY="-71" frameWidth="380" frameHeight="276"/>
+	<SubTexture name="cat and terry dead0011" x="372" y="646" width="372" height="205" frameX="-4" frameY="-71" frameWidth="380" frameHeight="276"/>
+	<SubTexture name="cat and terry hurt0000" x="744" y="646" width="372" height="183" frameX="0" frameY="0" frameWidth="372" frameHeight="187"/>
+	<SubTexture name="cat and terry hurt0001" x="1116" y="646" width="372" height="183" frameX="0" frameY="0" frameWidth="372" frameHeight="187"/>
+	<SubTexture name="cat and terry hurt0002" x="1488" y="646" width="372" height="184" frameX="0" frameY="-1" frameWidth="372" frameHeight="187"/>
+	<SubTexture name="cat and terry hurt0003" x="0" y="851" width="372" height="184" frameX="0" frameY="-1" frameWidth="372" frameHeight="187"/>
+	<SubTexture name="cat and terry hurt0004" x="372" y="851" width="372" height="184" frameX="0" frameY="-3" frameWidth="372" frameHeight="187"/>
+	<SubTexture name="cat and terry hurt0005" x="744" y="851" width="372" height="184" frameX="0" frameY="-3" frameWidth="372" frameHeight="187"/>
+	<SubTexture name="cat and terry hurt0006" x="1116" y="851" width="372" height="184" frameX="0" frameY="-1" frameWidth="372" frameHeight="187"/>
+	<SubTexture name="cat and terry hurt0007" x="1488" y="646" width="372" height="184" frameX="0" frameY="-1" frameWidth="372" frameHeight="187"/>
+	<SubTexture name="cat and terry hurt0008" x="1488" y="851" width="372" height="183" frameX="0" frameY="0" frameWidth="372" frameHeight="187"/>
+	<SubTexture name="cat and terry hurt0009" x="0" y="1035" width="372" height="183" frameX="0" frameY="0" frameWidth="372" frameHeight="187"/>
+	<SubTexture name="cat and terry idle0000" x="372" y="1035" width="372" height="183" frameX="0" frameY="-5" frameWidth="372" frameHeight="188"/>
+	<SubTexture name="cat and terry idle0001" x="372" y="1035" width="372" height="183" frameX="0" frameY="-5" frameWidth="372" frameHeight="188"/>
+	<SubTexture name="cat and terry idle0002" x="744" y="1035" width="372" height="182" frameX="0" frameY="-5" frameWidth="372" frameHeight="188"/>
+	<SubTexture name="cat and terry idle0003" x="744" y="1035" width="372" height="182" frameX="0" frameY="-5" frameWidth="372" frameHeight="188"/>
+	<SubTexture name="cat and terry idle0004" x="1116" y="1035" width="372" height="183" frameX="0" frameY="-1" frameWidth="372" frameHeight="188"/>
+	<SubTexture name="cat and terry idle0005" x="1116" y="1035" width="372" height="183" frameX="0" frameY="-1" frameWidth="372" frameHeight="188"/>
+	<SubTexture name="cat and terry idle0006" x="1116" y="1035" width="372" height="183" frameX="0" frameY="0" frameWidth="372" frameHeight="188"/>
+	<SubTexture name="cat and terry idle0007" x="1488" y="1035" width="372" height="183" frameX="0" frameY="0" frameWidth="372" frameHeight="188"/>
+	<SubTexture name="cat and terry idle0008" x="1488" y="1035" width="372" height="183" frameX="0" frameY="-3" frameWidth="372" frameHeight="188"/>
+	<SubTexture name="cat and terry idle0009" x="0" y="1218" width="372" height="183" frameX="0" frameY="-3" frameWidth="372" frameHeight="188"/>
+	<SubTexture name="cat and terry idle0010" x="372" y="1035" width="372" height="183" frameX="0" frameY="-5" frameWidth="372" frameHeight="188"/>
+	<SubTexture name="cat and terry idle0011" x="372" y="1035" width="372" height="183" frameX="0" frameY="-5" frameWidth="372" frameHeight="188"/>
+</TextureAtlas>

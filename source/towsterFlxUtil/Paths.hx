@@ -26,7 +26,7 @@ class Paths
 	 */
 	static public function getAnimation(path:String):FlxAtlasFrames
 	{
-		return FlxAtlasFrames.fromSparrow(getFilePath('images/' + path, PNG), getFilePath('images/' + path, XML));
+		return FlxAtlasFrames.fromSparrow(filePath(path, PNG), filePath(path, XML));
 	}
 
 	/** 
@@ -34,9 +34,9 @@ class Paths
 	 * @param fileType
 	 * @return Dynamic Path:String, text:String, json:Json, sounds:Sound, xml:Xml
 	 */
-	static public function getFile(filePath:String, fileType:FileTypes):Dynamic
+	static public function getFile(_filePath:String, fileType:FileTypes):Dynamic
 	{
-		var path = getFilePath(filePath, fileType);
+		var path = filePath(_filePath, fileType);
 		switch (fileType)
 		{
 			case JSON:
@@ -63,13 +63,30 @@ class Paths
 	 * @param fileType 
 	 * @return String
 	 */
-	static public function getFilePath(filePath:String, ?fileType:FileTypes):String
+	static public function filePath(filePath:String, ?fileType:FileTypes):String
 	{
 		if (fileType == null)
 		{
 			return 'assets/' + filePath;
 		}
-		return 'assets/' + filePath + '.' + fileTypeToString(fileType);
+
+		var prefix:String = '';
+		switch (fileType)
+		{
+			case PNG:
+				prefix = 'images';
+			case XML:
+				prefix = 'images';
+			case JSON:
+				prefix = 'data';
+			case TXT:
+				prefix = 'data';
+			case OGG:
+			case MP4:
+			case MP3:
+		}
+
+		return 'assets/' + prefix + '/' + filePath + '.' + fileTypeToString(fileType);
 	}
 
 	private static function fileTypeToString(fileType:FileTypes):String

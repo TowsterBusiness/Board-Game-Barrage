@@ -16,13 +16,13 @@ class GameOverSubState extends FlxSubState
 	{
 		super.create();
 
-		gameOverSprite = new FlxSprite(0, -50).loadGraphic(Paths.getFilePath('images/gameover.png'));
+		gameOverSprite = new FlxSprite(0, -50).loadGraphic(Paths.filePath('gameover', PNG));
 		gameOverSprite.screenCenter(X);
 		gameOverSprite.scale.set(0.8, 0.8);
 		gameOverSprite.alpha = 0;
 		add(gameOverSprite);
 
-		retryButton = new FlxSprite(550, 433).loadGraphic(Paths.getFilePath('images/retry.png'));
+		retryButton = new FlxSprite(550, 433).loadGraphic(Paths.filePath('retry', PNG));
 
 		retryButton.scale.set(0.4, 0.4);
 		retryButton.updateHitbox();

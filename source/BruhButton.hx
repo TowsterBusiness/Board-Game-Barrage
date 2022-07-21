@@ -15,13 +15,13 @@ class BruhButton extends FlxSprite
 		switch (spriteId)
 		{
 			case 'play' | 'credits':
-				loadGraphic(Paths.getFilePath('images/titleScreen/TitleScreenButtons.png'), true, 1000, 600);
+				loadGraphic(Paths.filePath('titleScreen/TitleScreenButtons', PNG), true, 1000, 600);
 				animation.add('credits-color', [0], 1, true);
 				animation.add('play-color', [1], 1, true);
 				animation.add('credits-gray', [2], 1, true);
 				animation.add('play-gray', [3], 1, true);
 			case 'resume' | 'mainMenu':
-				loadGraphic(Paths.getFilePath('images/PauseMenu.png'), true, 1000, 600);
+				loadGraphic(Paths.filePath('PauseMenu', PNG), true, 1000, 600);
 				animation.add('resume-gray', [0], 1, true);
 				animation.add('resume-color', [1], 1, true);
 				animation.add('mainMenu-color', [2], 1, true);

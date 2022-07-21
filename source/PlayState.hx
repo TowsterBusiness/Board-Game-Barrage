@@ -15,24 +15,9 @@ import towsterFlxUtil.Sprite;
 
 class PlayState extends FlxState
 {
-	var BG1:FlxSprite;
-	var BG2:FlxSprite;
-	var BG3:FlxSprite;
-	var BG4:FlxSprite;
-	var BG5:FlxSprite;
-	var BG6:FlxSprite;
-	var BG7:FlxSprite;
-	var BG22:FlxSprite;
-	var BG32:FlxSprite;
-	var BG42:FlxSprite;
-	var BG52:FlxSprite;
-	var BG62:FlxSprite;
-	var BG72:FlxSprite;
-
-	var maxPanning:Int = 40;
+	var mtnManager:MtnBGManager;
 
 	var hardMode:Bool = false;
-
 	var isShooting:Bool = false;
 
 	var pauseMenu:PauseSubState;
@@ -41,15 +26,15 @@ class PlayState extends FlxState
 
 	var bossMan:Sprite;
 	var bossMaxHealth:Int = 200;
-	var bossHealth:Int = 2;
-	var playerHealth:Int = 100;
+	var nextDiceHealth:Int = 40;
+	var bossHealth:Int = 200;
 	var bulletTimer:towsterFlxUtil.Timer;
 	var bullets:FlxTypedSpriteGroup<Bullet>;
 
 	var dice:Sprite;
 	var diceAnimation:Sprite;
 
-	var bulletType:Int = 0;
+	var onAttacks:Array<Bool> = [false, false, false, false, false];
 	// 0 = cat & terry
 	var playerType:Int = 2;
 	var reverseCardDir:Float = 25;
@@ -59,17 +44,17 @@ class PlayState extends FlxState
 	var playerBulletType:Int = -1;
 	var playerBulletTimer:towsterFlxUtil.Timer;
 	var playerBullets:FlxTypedSpriteGroup<Bullet>;
+	var playerHealth:Int = 100;
 
 	var cashOffset:Int = 0;
 	var bulletOffset:Int = 0;
 	var randomDiamondY:Float = 0;
 
-	var onAttacks:Array<Bool> = [false, false, false, false, false];
-
 	var winScreen:FlxSprite;
 
 	var shootSound:FlxSound;
 	var bigShootSound:FlxSound;
+	var diceRollSound:FlxSound;
 
 	var healthBar:FlxSprite;
 
@@ -77,13 +62,12 @@ class PlayState extends FlxState
 
 	override public function create()
 	{
-		FlxG.camera.bgColor = 0xFFE382;
-		backgroundCreate();
-
 		FlxG.sound.playMusic('assets/music/BOARD_BLASTIN_-_BATTLE.ogg', 0.5, true);
 
 		shootSound = FlxG.sound.load('assets/music/Basic_Shooter.ogg', 0.3, false);
 		bigShootSound = FlxG.sound.load('assets/music/Power_Shooter.ogg', 0.3, false);
+		diceRollSound = FlxG.sound.load('assets/music/dice_roll_sfx.ogg', 0.3, false);
+
 		FlxG.autoPause = false;
 		destroySubStates = false;
 		pauseMenu = new PauseSubState(0xB7676767);
@@ -97,6 +81,9 @@ class PlayState extends FlxState
 		});
 
 		playerType = FloatingVarables.characterType;
+
+		mtnManager = new MtnBGManager(30);
+		add(mtnManager);
 
 		playerBullets = new FlxTypedSpriteGroup(0, 0, 9999);
 		add(playerBullets);
@@ -141,7 +128,7 @@ class PlayState extends FlxState
 		mainChar.screenCenter(Y);
 		add(mainChar);
 
-		hitbox = new FlxSprite(mainChar.x, mainChar.y).loadGraphic(Paths.getFilePath('images/hitbox.png'));
+		hitbox = new FlxSprite(mainChar.x, mainChar.y).loadGraphic(Paths.filePath('hitbox', PNG));
 		hitbox.setGraphicSize(40, 40);
 		hitbox.updateHitbox();
 		hitbox.x = mainChar.x + mainChar.width / 2 - hitbox.width / 2;
@@ -196,15 +183,15 @@ class PlayState extends FlxState
 		healthBar = new FlxSprite(-76, 19);
 		healthBar.frames = Paths.getAnimation('healthBar/hp_bar' + playerType);
 		healthBar.scale.set(0.8, 0.8);
-		for (i in 0...100)
+		for (i in 0...101)
 		{
-			healthBar.animation.addByIndices(i + '', 'healthBar0', [99 - i], '', 24, true);
+			healthBar.animation.addByIndices((i + 1) + '', 'healthBar0', [99 - i], '', 24, true);
 		}
 		healthBar.animation.play('100');
 		add(healthBar);
 
-		winScreen = new FlxSprite(-200, -1400).loadGraphic(Paths.getFilePath('images/winScreen/win' + playerType, PNG));
-		winScreen.setGraphicSize(1024, 768);
+		winScreen = new FlxSprite(-200, -1400).loadGraphic(Paths.filePath('winScreen/win' + playerType, PNG));
+		winScreen.scale.set(0.5, 0.5);
 		add(winScreen);
 
 		super.create();
@@ -213,11 +200,9 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float)
 	{
 		movement();
-		backgroundUpdate();
 
 		if (bossHealth < 0 && (FlxG.mouse.justPressed || FlxG.keys.justPressed.ENTER))
 			FlxG.switchState(new TitleState());
-		trace(winScreen.x + ' ' + winScreen.y);
 
 		if (FlxG.keys.justPressed.P)
 			pause();
@@ -247,7 +232,7 @@ class PlayState extends FlxState
 		bossBulletShit();
 		playerBulletShit();
 
-		if (bossHealth % Math.floor(20) == 0)
+		if (bossHealth < nextDiceHealth)
 			spawnDice();
 
 		if (dice.overlaps(mainChar) && dice.alpha == 1)
@@ -267,7 +252,11 @@ class PlayState extends FlxState
 			var rand = avalableAttacks[Math.floor(Math.random() * avalableAttacks.length)];
 			diceAnimation.playAnim('' + rand);
 			onAttacks[rand] = true;
-			playerBulletType = rand % 3;
+			playerBulletType = (playerBulletType + 1) % 3;
+			if (rand == 2)
+			{
+				bullets.add(new Bullet(Math.random() * 1280, 900, 3));
+			}
 		}
 
 		if (FlxG.keys.justPressed.COMMA)
@@ -289,8 +278,29 @@ class PlayState extends FlxState
 	function spawnDice()
 	{
 		playerBulletType = -1;
-		bossHealth--;
+		nextDiceHealth += 40;
 		FlxTween.tween(dice, {alpha: 1}, 1);
+	}
+
+	function diceRoll()
+	{
+		diceRollSound.play();
+		FlxTween.tween(diceAnimation, {x: 975}, 0.5, {
+			ease: FlxEase.quadIn,
+			onComplete: (x) ->
+			{
+				diceAnimation.playAnim('drop');
+				FlxTween.tween(diceAnimation, {x: 1250}, 0.5, {
+					ease: FlxEase.quadOut,
+					startDelay: 3,
+					onComplete: (y) ->
+					{
+						diceAnimation.playAnim('mid-air');
+						diceRollSound.stop();
+					}
+				});
+			}
+		});
 	}
 
 	function gameOver()
@@ -325,25 +335,6 @@ class PlayState extends FlxState
 	{
 		bossHealth -= amount;
 		bossMan.playAnim('hurt');
-	}
-
-	function diceRoll()
-	{
-		FlxTween.tween(diceAnimation, {x: 975}, 0.5, {
-			ease: FlxEase.quadIn,
-			onComplete: (x) ->
-			{
-				diceAnimation.playAnim('drop');
-				FlxTween.tween(diceAnimation, {x: 1250}, 0.5, {
-					ease: FlxEase.quadOut,
-					startDelay: 3,
-					onComplete: (y) ->
-					{
-						diceAnimation.playAnim('mid-air');
-					}
-				});
-			}
-		});
 	}
 
 	var veloX:Float;
@@ -394,84 +385,9 @@ class PlayState extends FlxState
 		pause();
 	}
 
-	function loseBullets() {}
-
 	function pause()
 	{
 		openSubState(pauseMenu);
-	}
-
-	function backgroundCreate()
-	{
-		BG1 = new FlxSprite(0, 0).loadGraphic(Paths.getFilePath('images/background/bg7', PNG));
-		BG1.setGraphicSize(2000, 2000);
-		BG1.screenCenter(XY);
-		add(BG1);
-		BG2 = new FlxSprite(0, 0).loadGraphic(Paths.getFilePath('images/background/bg2', PNG));
-		add(BG2);
-		BG22 = new FlxSprite(3200, 0).loadGraphic(Paths.getFilePath('images/background/bg2', PNG));
-		add(BG22);
-		BG3 = new FlxSprite(0, 120).loadGraphic(Paths.getFilePath('images/background/bg1', PNG));
-		add(BG3);
-		BG32 = new FlxSprite(3200, 0).loadGraphic(Paths.getFilePath('images/background/bg1', PNG));
-		add(BG32);
-		BG4 = new FlxSprite(0, 0).loadGraphic(Paths.getFilePath('images/background/bg6', PNG));
-		add(BG4);
-		BG42 = new FlxSprite(3200, 0).loadGraphic(Paths.getFilePath('images/background/bg6', PNG));
-		add(BG42);
-		BG5 = new FlxSprite(0, 120).loadGraphic(Paths.getFilePath('images/background/bg5', PNG));
-		add(BG5);
-		BG52 = new FlxSprite(3200, 0).loadGraphic(Paths.getFilePath('images/background/bg5', PNG));
-		add(BG52);
-		BG6 = new FlxSprite(0, 0).loadGraphic(Paths.getFilePath('images/background/bg4', PNG));
-		add(BG6);
-		BG62 = new FlxSprite(3200, 0).loadGraphic(Paths.getFilePath('images/background/bg4', PNG));
-		add(BG62);
-		BG7 = new FlxSprite(0, 0).loadGraphic(Paths.getFilePath('images/background/bg3', PNG));
-		add(BG7);
-		BG72 = new FlxSprite(3200, 0).loadGraphic(Paths.getFilePath('images/background/bg3', PNG));
-		add(BG72);
-	}
-
-	function backgroundUpdate()
-	{
-		BG2.x -= maxPanning / 32;
-		BG3.x -= maxPanning / 16;
-		BG4.x -= maxPanning / 8;
-		BG5.x -= maxPanning / 4;
-		BG6.x -= maxPanning / 2.5;
-		BG7.x -= maxPanning / 1.5;
-		BG22.x -= maxPanning / 32;
-		BG32.x -= maxPanning / 16;
-		BG42.x -= maxPanning / 8;
-		BG52.x -= maxPanning / 4;
-		BG62.x -= maxPanning / 2.5;
-		BG72.x -= maxPanning / 1.5;
-
-		if (BG2.x < -3200)
-			BG2.x = BG22.x + 3200;
-		if (BG22.x < -3200)
-			BG22.x = BG2.x + 3200;
-		if (BG3.x < -3200)
-			BG3.x = BG32.x + 3200;
-		if (BG32.x < -3200)
-			BG32.x = BG3.x + 3200;
-		if (BG4.x < -3200)
-			BG4.x = BG42.x + 3200;
-		if (BG42.x < -3200)
-			BG42.x = BG4.x + 3200;
-		if (BG5.x < -3200)
-			BG5.x = BG52.x + 3200;
-		if (BG52.x < -3200)
-			BG52.x = BG5.x + 3200;
-		if (BG6.x < -3200)
-			BG6.x = BG62.x + 3200;
-		if (BG62.x < -3200)
-			BG62.x = BG6.x + 3200;
-		if (BG7.x < -3200)
-			BG7.x = BG72.x + 3200;
-		if (BG72.x < -3200)
-			BG72.x = BG7.x + 3200;
 	}
 
 	function playerBulletShit()
@@ -500,7 +416,6 @@ class PlayState extends FlxState
 
 		playerBullets.forEachAlive(function(bullet)
 		{
-			bullet.move();
 			if (bullet.overlaps(bossMan))
 			{
 				reverseCardDir = Math.random() * 70 - 270 - 35;
@@ -561,7 +476,6 @@ class PlayState extends FlxState
 
 		bullets.forEachAlive(function(bullet)
 		{
-			bullet.move();
 			if (bullet.overlaps(hitbox))
 			{
 				if (bullet.bulletType == 3)
@@ -575,7 +489,7 @@ class PlayState extends FlxState
 				}
 				else
 				{
-					kill();
+					bullet.kill();
 					damagePlayer(10);
 				}
 			}

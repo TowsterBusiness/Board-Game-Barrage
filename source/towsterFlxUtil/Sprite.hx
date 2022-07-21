@@ -6,12 +6,18 @@ class Sprite extends FlxSprite
 {
 	var offsetMap:Map<String, Array<Float>>;
 
-	public function new(x:Float, y:Float, ?path:String)
+	public function new(x:Float, y:Float, ?path:String, ?scale:Float, ?preAnimation:String)
 	{
 		offsetMap = new Map<String, Array<Float>>();
 		super(x, y);
 		if (path != null)
 			frames = Paths.getAnimation(path);
+
+		if (scale != null)
+			this.scale.set(scale, scale);
+
+		if (preAnimation != null)
+			playAnim(preAnimation);
 	}
 
 	public function addOffset(name:String, x:Float, y:Float)

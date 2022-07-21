@@ -23,7 +23,7 @@ class PlayerSelect extends FlxState
 	{
 		FlxG.sound.playMusic('assets/music/Board_Blastin_-_Menu_Selection.ogg', 0.5, true);
 
-		BG = new FlxSprite(0, 0).loadGraphic(Paths.getFilePath('images/playerSelect/unknown.png'));
+		BG = new FlxSprite(0, 0).loadGraphic(Paths.filePath('playerSelect/unknown', PNG));
 		add(BG);
 
 		characters = new FlxTypedSpriteGroup(-117, -247, characterList.length);
@@ -32,19 +32,19 @@ class PlayerSelect extends FlxState
 		var offset = 0;
 		for (name in characterList)
 		{
-			var tempSprite:FlxSprite = new FlxSprite(offset, 0).loadGraphic(Paths.getFilePath('images/playerSelect/' + name + '.png'));
+			var tempSprite:FlxSprite = new FlxSprite(offset, 0).loadGraphic(Paths.filePath('playerSelect/' + name + '', PNG));
 			tempSprite.scale.set(0.4, 0.4);
 			offset += 300;
 			characters.add(tempSprite);
 		}
-		characters.members[0].loadGraphic(Paths.getFilePath('images/playerSelect/Catterry_Color.png'));
+		characters.members[0].loadGraphic(Paths.filePath('playerSelect/Catterry_Color', PNG));
 
-		characterText = new FlxSprite(0, 1000).loadGraphic(Paths.getFilePath('images/playerSelect/text/Catterry_text.png'));
+		characterText = new FlxSprite(0, 1000).loadGraphic(Paths.filePath('playerSelect/text/Catterry_text', PNG));
 		characterText.scale.set(0.7, 0.7);
 		characterText.screenCenter(X);
 		add(characterText);
 
-		border = new FlxSprite(53, 43).loadGraphic(Paths.getFilePath('images/playerSelect/border.png'));
+		border = new FlxSprite(53, 43).loadGraphic(Paths.filePath('playerSelect/border', PNG));
 		border.scale.set(0.4, 0.4);
 		border.updateHitbox();
 		add(border);
@@ -70,27 +70,27 @@ class PlayerSelect extends FlxState
 
 		if (FlxG.keys.anyJustPressed([D, RIGHT, A, LEFT]))
 		{
-			characterText.loadGraphic(Paths.getFilePath('images/playerSelect/text/' + characterList[characterPointer] + '_text.png'));
-			characters.members[0].loadGraphic(Paths.getFilePath('images/playerSelect/Catterry.png'));
-			characters.members[1].loadGraphic(Paths.getFilePath('images/playerSelect/Wildcard.png'));
-			characters.members[2].loadGraphic(Paths.getFilePath('images/playerSelect/Lolli.png'));
+			FlxG.sound.load('assets/music/BOARD_BLASTIN_-_OPTION_SELECTED.ogg', 0.5, false).play();
+			characterText.loadGraphic(Paths.filePath('playerSelect/text/' + characterList[characterPointer] + '_text', PNG));
+			characters.members[0].loadGraphic(Paths.filePath('playerSelect/Catterry', PNG));
+			characters.members[1].loadGraphic(Paths.filePath('playerSelect/Wildcard', PNG));
+			characters.members[2].loadGraphic(Paths.filePath('playerSelect/Lolli', PNG));
 			if (characterPointer == 0)
 			{
-				characters.members[0].loadGraphic(Paths.getFilePath('images/playerSelect/Catterry_Color.png'));
+				characters.members[0].loadGraphic(Paths.filePath('playerSelect/Catterry_Color', PNG));
 			}
 			else if (characterPointer == 1)
 			{
-				characters.members[1].loadGraphic(Paths.getFilePath('images/playerSelect/Wildcard_Color.png'));
+				characters.members[1].loadGraphic(Paths.filePath('playerSelect/Wildcard_Color', PNG));
 			}
 			else if (characterPointer == 2)
 			{
-				characters.members[2].loadGraphic(Paths.getFilePath('images/playerSelect/Lolli_Color.png'));
+				characters.members[2].loadGraphic(Paths.filePath('playerSelect/Lolli_Color', PNG));
 			}
 		}
 
 		if (FlxG.keys.anyJustPressed([ENTER]) && characterPointer <= 2)
 		{
-			FlxG.sound.load('assets/music/Board_Blastin_-_Menu_Selection.ogg', 0.5, false).play();
 			FloatingVarables.characterType = characterPointer;
 			FlxTween.tween(FlxG.camera, {zoom: 20, alpha: 0}, 1.5, {
 				ease: FlxEase.sineIn,

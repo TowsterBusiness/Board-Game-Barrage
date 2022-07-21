@@ -13,8 +13,7 @@ class PauseSubState extends FlxSubState
 	override public function create():Void
 	{
 		super.create();
-		FlxG.sound.playMusic('assets/music/BOARD_BLASTIN_-_PAUSE.ogg', 0, true);
-		FlxTween.tween(FlxG.sound, {volume: 0.5}, 1);
+		FlxG.sound.playMusic('assets/music/BOARD_BLASTIN_-_PAUSE.ogg', 0.5, true);
 
 		resume = new BruhButton(220, 0, 'resume', 0.4);
 		mainMenu = new BruhButton(270, 0, 'mainMenu', 0.4);

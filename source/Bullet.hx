@@ -8,68 +8,68 @@ class Bullet extends Sprite
 {
 	var tick = 0;
 
-	public var bulletType = 0;
+	public var bulletType:String = 'dollarBill';
 	public var someInput:Dynamic;
 
 	public var damage:Int = 1;
 
-	public function new(x:Float, y:Float, bulletType:Int, ?someInput:Dynamic = 0)
+	public function new(x:Float, y:Float, bulletType:String, ?someInput:Dynamic = 0)
 	{
 		this.bulletType = bulletType;
 		this.someInput = someInput;
 
 		switch (bulletType)
 		{
-			case 0:
+			case 'dollar':
 				super(x, y, 'bullet/dollarBill');
 				animation.addByPrefix('idle', 'dollar bill particle0', 24, true);
 				playAnim('idle');
 				angle = someInput;
 				setGraphicSize(50, 50);
 				damage = 10;
-			case 1:
+			case 'moneyBag':
 				super(x, y, 'bullet/moneyBag');
 				animation.addByPrefix('idle', 'money bag particle0', 24, true);
 				playAnim('idle');
 				setGraphicSize(100, 100);
 				damage = 10;
-			case 2:
+			case 'coin':
 				super(x, y, 'bullet/coin');
 				animation.addByPrefix('idle', 'coin particle0', 24, true);
 				playAnim('idle');
 				setGraphicSize(30, 30);
 				damage = 10;
-			case 3:
+			case 'houseMissile':
 				super(x, y);
 				loadGraphic(Paths.filePath('bullet/houseMissile', PNG));
 				damage = 3;
-			case 4:
+			case 'diamond':
 				super(x, y);
 				loadGraphic(Paths.filePath('bullet/diamond', PNG));
 				setGraphicSize(60, 60);
 				angle = 94;
 				damage = 2;
-			case 1001:
-				super(x, y, 'bullet/plus_2_card_particle');
-				animation.addByPrefix('idle', 'plus 2 card particle0', 24, true);
+			case 'reverseCard':
+				super(x, y, 'bullet/reverse_card_particle');
+				animation.addByPrefix('idle', 'reverse card particle0', 24, true);
 				playAnim('idle');
 				setGraphicSize(25, 25);
-			case 1002:
+			case 'skipCard':
 				super(x, y, 'bullet/skip_card_particle');
 				animation.addByPrefix('idle', 'skip card particle0', 24, true);
 				playAnim('idle');
 				setGraphicSize(25, 25);
-			case 1003:
-				super(x, y, 'bullet/reverse_card_particle');
-				animation.addByPrefix('idle', 'reverse card particle0', 24, true);
+			case 'plus2Card':
+				super(x, y, 'bullet/plus_2_card_particle');
+				animation.addByPrefix('idle', 'plus 2 card particle0', 24, true);
 				playAnim('idle');
 				setGraphicSize(75, 75);
 				damage = 2;
+			default:
+				trace("doesn't work with: " + bulletType);
 		}
 		updateHitbox();
 	}
-
-	var reverseCardDir:Float = 25;
 
 	override function update(elapsed:Float)
 	{
@@ -77,42 +77,49 @@ class Bullet extends Sprite
 
 		switch (bulletType)
 		{
-			case 0:
+			case 'dollar':
 				moveAtAngle(5, someInput);
 				removeIfOffscreen();
-			case 1:
-				if (tick > 300)
-					kill();
-
-				if (x > 1800)
+			case 'moneyBag':
+				if (x > 1650)
 					x -= 0;
 				else
 					x -= someInput;
-			case 2:
-				moveAtAngle(12, someInput);
+
 				if (y < -500)
 					kill();
-			case 3:
-				if (tick > 300)
-					y -= (tick - 300) * 2;
-				else
-					y = 720 - tick / 4;
+			case 'coin':
+				moveAtAngle(12, someInput * 57.3);
 				removeIfOffscreen();
-			case 4:
+			case 'houseMissile':
+				if (tick > 300)
+				{
+					y -= (tick - 300) * 2;
+					damage = 2;
+				}
+				else
+				{
+					damage = 0;
+					y = 720 - tick / 4;
+				}
+				removeIfOffscreen();
+			case 'diamond':
 				x -= 13;
 				if (x < -300)
 					kill();
-			case 1001:
+			case 'reverseCard':
 				x += 20;
 				removeIfOffscreen();
-			case 1002:
+			case 'skipCard':
 				moveAtAngle(10, someInput);
+				angle = someInput;
 				if (alpha <= 0)
 					kill();
-				alpha = 1 - ((tick - 100) / 10);
+				alpha = 1 - ((tick - 20) / 10);
 				removeIfOffscreen();
-			case 1003:
+			case 'plus2Card':
 				moveAtAngle(10, someInput);
+				angle = someInput;
 				removeIfOffscreen();
 		}
 		tick++;

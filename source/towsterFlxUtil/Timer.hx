@@ -1,27 +1,36 @@
 package towsterFlxUtil;
 
-class Timer
+import flixel.FlxBasic;
+
+class Timer extends FlxBasic
 {
-	public var timer:Float = 0;
+	public var time:Float = 0;
 
 	var startTime:Float = 0;
-	var lastCheckedTime = 0;
+	var nextHurdle = 0;
 	var betweenMs = 10;
 
-	public function new(ms:Int, ?startTime:Float)
+	public function new(ms:Int, ?startTime:Float = 0)
 	{
+		super();
 		this.betweenMs = ms;
 
-		timer -= startTime / 1000;
+		time -= startTime / 1000;
 
-		startTime = timer * 1000;
+		nextHurdle = ms;
+	}
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+		time += elapsed * 1000;
 	}
 
 	public function justPassed()
 	{
-		if ((lastCheckedTime + betweenMs) < timer * 1000 - startTime)
+		if (nextHurdle < time)
 		{
-			lastCheckedTime = Math.floor((timer * 1000 - startTime) + betweenMs);
+			nextHurdle += betweenMs;
 			return true;
 		}
 		return false;

@@ -27,12 +27,13 @@ class PlayState extends FlxState
 	var bossMan:Sprite;
 	var bossMaxHealth:Int = 200;
 	var nextDiceHealth:Int = 0;
-	var bossHealth:Int = 200;
+	var bossHealth:Float = 200;
 	var bulletTimer:towsterFlxUtil.Timer;
 	var bullets:FlxTypedSpriteGroup<Bullet>;
 
 	var dice:Sprite;
 	var diceAnimation:Sprite;
+	var lilDiceSprite:Sprite;
 
 	var onAttacks:Array<Bool> = [false, false, false, false, false];
 	// 0 = cat & terry
@@ -42,9 +43,9 @@ class PlayState extends FlxState
 	// 1001 = basic Bullet
 	// 1001 = reverse Bullet
 	var playerBulletType:Int = -1;
-	var playerBulletTimer:towsterFlxUtil.Timer;
+	var playerBulletTimer:Float;
 	var playerBullets:FlxTypedSpriteGroup<Bullet>;
-	var playerHealth:Int = 100;
+	var playerHealth:Float = 99;
 
 	var cashOffset:Int = 0;
 	var bulletOffset:Int = 0;
@@ -179,15 +180,13 @@ class PlayState extends FlxState
 
 		bulletTimer = new towsterFlxUtil.Timer(400);
 		add(bulletTimer);
-		playerBulletTimer = new towsterFlxUtil.Timer(350);
-		add(playerBulletTimer);
 
 		healthBar = new FlxSprite(-76, 19);
 		healthBar.frames = Paths.getAnimation('healthBar/hp_bar' + playerType);
 		healthBar.scale.set(0.8, 0.8);
 		for (i in 0...101)
 		{
-			healthBar.animation.addByIndices((i + 1) + '', 'healthBar0', [99 - i], '', 24, true);
+			healthBar.animation.addByIndices(i + '', 'healthBar0', [99 - i], '', 24, true);
 		}
 		healthBar.animation.play('100');
 		add(healthBar);
@@ -203,8 +202,18 @@ class PlayState extends FlxState
 	{
 		movement();
 
+		playerBulletTimer += elapsed * 1000;
+
 		if (bossHealth < 0 && (FlxG.mouse.justPressed || FlxG.keys.justPressed.ENTER))
-			FlxG.switchState(new TitleState());
+		{
+			FlxTween.tween(FlxG.camera, {alpha: 0}, 1.5, {
+				ease: FlxEase.sineIn,
+				onComplete: (x) ->
+				{
+					FlxG.switchState(new TitleState());
+				}
+			});
+		}
 
 		if (FlxG.keys.justPressed.P)
 			pause();
@@ -231,7 +240,7 @@ class PlayState extends FlxState
 		bossBulletShit();
 		playerBulletShit();
 
-		if (bossHealth < bossMaxHealth - nextDiceHealth)
+		if (bossHealth <= bossMaxHealth - nextDiceHealth)
 			spawnDice();
 
 		if (dice.overlaps(mainChar) && dice.alpha == 1)
@@ -271,6 +280,8 @@ class PlayState extends FlxState
 		{
 			winState();
 		}
+
+		// ;
 
 		super.update(elapsed);
 	}
@@ -316,10 +327,17 @@ class PlayState extends FlxState
 		bossMan.playAnim('dead');
 		FlxTween.tween(bullets, {y: -720}, 3, {ease: FlxEase.quartOut});
 		FlxTween.tween(winScreen, {y: -380}, 1.5, {ease: FlxEase.backOut});
+		FlxTween.tween(FlxG.sound, {volume: 0}, 1, {
+			onComplete: (x) ->
+			{
+				FlxG.sound.playMusic('assets/music/BOARD_BLASTIN_-_VICTORY.ogg', 0.5, true);
+				FlxTween.tween(FlxG.sound, {volume: 1}, 1);
+			}
+		});
 		bossHealth = -1;
 	}
 
-	function damagePlayer(amount:Int)
+	function damagePlayer(amount:Float)
 	{
 		playerHealth -= amount;
 		if (playerHealth >= 0)
@@ -333,8 +351,10 @@ class PlayState extends FlxState
 		}
 	}
 
-	function damageBoss(amount:Int)
+	function damageBoss(amount:Float)
 	{
+		if (amount == 0)
+			return;
 		bossHealth -= amount;
 		bossMan.playAnim('hurt');
 	}
@@ -394,25 +414,88 @@ class PlayState extends FlxState
 
 	function playerBulletShit()
 	{
-		if (playerBulletTimer.justPassed() && isShooting)
+		if (isShooting)
 		{
-			switch (playerBulletType)
+			bulletOffset++;
+			switch (playerType)
 			{
 				case 0:
-					shootSound.play();
-					playerBullets.add(new Bullet(mainChar.x + 17, mainChar.y + 17, 'reverseCard'));
-				case 1:
-					shootSound.play();
-					playerBullets.add(new Bullet(mainChar.x + 17, mainChar.y + 17, 'skipCard', 120));
-					playerBullets.add(new Bullet(mainChar.x + 17, mainChar.y + 17, 'skipCard', 90));
-					playerBullets.add(new Bullet(mainChar.x + 17, mainChar.y + 17, 'skipCard', 60));
-				case 2:
-					if (bulletOffset % 2 == 0)
+					switch (playerBulletType)
 					{
-						bigShootSound.play();
-						playerBullets.add(new Bullet(mainChar.x + 17, mainChar.y + 17, 'plus2Card', reverseCardDir));
+						case 0:
+							if (playerBulletTimer < 500)
+								return;
+							playerBullets.add(new Bullet(mainChar.x + mainChar.width / 2, mainChar.y + mainChar.height / 2, 'longLazer'));
+							playerBulletTimer = 0;
+						case 1:
+							if (playerBulletTimer < 1000)
+								return;
+							playerBullets.add(new Bullet(mainChar.x, mainChar.y, 'bigLazer'));
+							playerBulletTimer = 0;
+						case 2:
+							if (playerBulletTimer < 3000)
+								return;
+							FlxTween.tween(mainChar, {alpha: 0.5}, 1, {
+								onComplete: (x) ->
+								{
+									shootSound.play();
+									playerBullets.add(new Bullet(mainChar.x + mainChar.width / 2, mainChar.y + mainChar.height / 2, 'lilLazer', 0));
+									playerBullets.add(new Bullet(mainChar.x + mainChar.width / 2, mainChar.y + mainChar.height / 2, 'lilLazer', 1));
+									FlxTween.tween(mainChar, {alpha: 1}, 1);
+								}
+							});
+							playerBulletTimer = 0;
 					}
-					bulletOffset++;
+				case 1:
+					switch (playerBulletType)
+					{
+						case 0:
+							if (playerBulletTimer < 500)
+								return;
+							shootSound.play();
+							playerBullets.add(new Bullet(mainChar.x + mainChar.width / 2, mainChar.y + mainChar.height / 2, 'reverseCard'));
+
+							playerBulletTimer = 0;
+						case 1:
+							if (playerBulletTimer < 1000)
+								return;
+							shootSound.play();
+							playerBullets.add(new Bullet(mainChar.x + mainChar.width / 2, mainChar.y + mainChar.height / 2, 'skipCard', reverseCardDir));
+							mainChar.x = Math.random() * 900;
+							mainChar.y = Math.random() * 650;
+							mainChar.alpha = 0.5;
+							FlxTween.tween(mainChar, {alpha: 1}, 1);
+							playerBulletTimer = 0;
+						case 2:
+							if (playerBulletTimer < 1000)
+								return;
+							bigShootSound.play();
+							playerBullets.add(new Bullet(mainChar.x + mainChar.width / 2, mainChar.y + mainChar.height / 2, 'plus2Card', reverseCardDir));
+							playerBulletTimer = 0;
+					}
+				case 2:
+					switch (playerBulletType)
+					{
+						case 0:
+							if (playerBulletTimer < 500)
+								return;
+							shootSound.play();
+							playerBullets.add(new Bullet(mainChar.x + mainChar.width / 2, mainChar.y + mainChar.height / 2, 'candy', 110));
+							playerBullets.add(new Bullet(mainChar.x + mainChar.width / 2, mainChar.y + mainChar.height / 2, 'candy', 70));
+							playerBulletTimer = 0;
+						case 1:
+							if (playerBulletTimer < 2000)
+								return;
+							playerBullets.add(new Bullet(mainChar.x + mainChar.width / 2, mainChar.y + mainChar.height / 2, 'spearmint', -10));
+							hitbox.alpha = 1;
+							hitbox.setGraphicSize(80, 80);
+							playerBulletTimer = 0;
+						case 2:
+							if (playerBulletTimer < 1000)
+								return;
+							playerBullets.add(new Bullet(mainChar.x + mainChar.width / 2, mainChar.y + mainChar.height / 2, 'gummi', Math.random() * 20 + 5));
+							playerBulletTimer = 0;
+					}
 			}
 		}
 
@@ -421,6 +504,20 @@ class PlayState extends FlxState
 			if (bullet.overlaps(bossMan))
 			{
 				reverseCardDir = Math.random() * 70 - 270 - 35;
+
+				if (bullet.bulletType == 'reverseCard')
+				{
+					for (i in 0...6)
+					{
+						bullets.add(new Bullet(bossMan.x + 25, bossMan.y + 140, 'dollar', i * 72 + Math.random() * 100));
+					}
+				}
+
+				if (bullet.bulletType == 'spearmint')
+				{
+					hitbox.alpha = 0;
+					hitbox.setGraphicSize(40, 40);
+				}
 
 				bullet.kill();
 				damageBoss(bullet.damage);
@@ -435,56 +532,9 @@ class PlayState extends FlxState
 
 	function bossBulletShit()
 	{
-		if (bulletTimer.justPassed())
-		{
-			cashOffset += 10;
-			for (atlen in 0...onAttacks.length)
-			{
-				if (onAttacks[atlen])
-				{
-					switch (atlen)
-					{
-						case 0:
-							if (cashOffset % 20 == 0)
-							{
-								bullets.add(new Bullet(1400, Math.random() * 850 + 25, 'moneyBag', Math.random() * 10 + 5));
-							}
-						case 1:
-							for (i in 0...6)
-							{
-								bullets.add(new Bullet(bossMan.x + 25, bossMan.y + 140, 'dollar', i * 72 + cashOffset));
-							}
-						case 2:
-							if (cashOffset % 50 == 0)
-							{
-								bullets.add(new Bullet(Math.random() * 1280, 900, 'houseMissile'));
-							}
-						case 3:
-							if (cashOffset % 20 == 0)
-							{
-								bullets.add(new Bullet(bossMan.x
-									+ 25, bossMan.y
-									+ 140, 'coin',
-									Math.atan2(mainChar.x - bossMan.x + 25.0, mainChar.y - bossMan.y + 140.0)
-									- 0.32));
-							}
-						case 4:
-							if (cashOffset % 40 == 0)
-							{
-								randomDiamondY = Math.random() * 900 + 30;
-								for (i in 2...10)
-								{
-									bullets.add(new Bullet(i * 70 + 1280, randomDiamondY, 'diamond'));
-								}
-							}
-					}
-				}
-			}
-		}
-
 		bullets.forEachAlive(function(bullet)
 		{
-			if (bullet.overlaps(hitbox))
+			if (bullet.overlaps(hitbox) && mainChar.alpha == 1)
 			{
 				if (bullet.bulletType != 'houseMissile')
 					bullet.kill();
@@ -496,5 +546,50 @@ class PlayState extends FlxState
 		{
 			bullets.remove(bullet);
 		});
+		if (!bulletTimer.justPassed())
+			return;
+		cashOffset += 5;
+		for (atlen in 0...onAttacks.length)
+		{
+			if (onAttacks[atlen])
+			{
+				switch (atlen)
+				{
+					case 0:
+						if (cashOffset % 10 == 0)
+						{
+							bullets.add(new Bullet(1400, Math.random() * 850 + 25, 'moneyBag', Math.random() * 10 + 5));
+						}
+					case 1:
+						if (cashOffset % 10 == 0)
+						{
+							for (i in 0...5)
+							{
+								bullets.add(new Bullet(bossMan.x + 25, bossMan.y + 140, 'dollar', i * 72 + cashOffset));
+							}
+						}
+					case 2:
+						if (cashOffset % 50 == 0)
+						{
+							bullets.add(new Bullet(Math.random() * 1100, 900, 'houseMissile'));
+						}
+					case 3:
+						if (cashOffset % 10 == 0)
+						{
+							bullets.add(new Bullet(bossMan.x + 25, bossMan.y + 140, 'coin',
+								Math.atan2(hitbox.x - bossMan.x + 25.0, hitbox.y - bossMan.y + 140.0) - 0.35));
+						}
+					case 4:
+						if (cashOffset % 20 == 0)
+						{
+							randomDiamondY = Math.random() * 900 + 30;
+							for (i in 2...10)
+							{
+								bullets.add(new Bullet(i * 70 + 1280, randomDiamondY, 'diamond'));
+							}
+						}
+				}
+			}
+		}
 	}
 }

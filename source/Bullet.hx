@@ -6,12 +6,12 @@ import towsterFlxUtil.Sprite;
 
 class Bullet extends Sprite
 {
-	var tick = 0;
+	var tick:Float = 0;
 
-	public var bulletType:String = 'dollarBill';
+	public var bulletType:String = 'dollar';
 	public var someInput:Dynamic;
 
-	public var damage:Int = 1;
+	public var damage:Float = 1;
 
 	public function new(x:Float, y:Float, bulletType:String, ?someInput:Dynamic = 0)
 	{
@@ -53,18 +53,54 @@ class Bullet extends Sprite
 				super(x, y, 'bullet/reverse_card_particle');
 				animation.addByPrefix('idle', 'reverse card particle0', 24, true);
 				playAnim('idle');
-				setGraphicSize(25, 25);
+				setGraphicSize(35, 35);
 			case 'skipCard':
 				super(x, y, 'bullet/skip_card_particle');
 				animation.addByPrefix('idle', 'skip card particle0', 24, true);
 				playAnim('idle');
-				setGraphicSize(25, 25);
+				setGraphicSize(35, 35);
 			case 'plus2Card':
 				super(x, y, 'bullet/plus_2_card_particle');
 				animation.addByPrefix('idle', 'plus 2 card particle0', 24, true);
 				playAnim('idle');
 				setGraphicSize(75, 75);
 				damage = 2;
+			case 'lilLazer':
+				super(x, y, 'bullet/red_lazer_particle');
+				animation.addByPrefix('idle', 'red lazer particle0', 24, true);
+				playAnim('idle');
+				damage = 2;
+				scale.set(0.5, 0.5);
+			case 'longLazer':
+				super(x, y, 'bullet/blue_lazer_particle');
+				animation.addByPrefix('idle', 'blue lazer particle0', 24, true);
+				playAnim('idle');
+				scale.set(0.5, 0.5);
+			case 'bigLazer':
+				super(x, y, 'bullet/green_lazer_particle');
+				animation.addByPrefix('idle', 'green lazer particle0', 24, true);
+				playAnim('idle');
+				scale.set(0.8, 0.8);
+			case 'candy':
+				super(x, y, 'bullet/candy_particle');
+				animation.addByPrefix('idle', 'candy particle0', 24, true);
+				playAnim('idle');
+				angle = someInput + 180;
+				scale.set(0.4, 0.4);
+				damage = 0.5;
+			case 'spearmint':
+				super(x, y, 'bullet/peppermint_particle');
+				animation.addByPrefix('idle', 'peppermint particle0', 24, true);
+				playAnim('idle');
+				scale.set(0.5, 0.5);
+				damage = 2;
+			case 'gummi':
+				super(x, y, 'bullet/gummy_particle');
+				animation.addByPrefix('idle', 'gummy particle0', 24, true);
+				playAnim('idle');
+				scale.set(0.5, 0.5);
+				damage = 1;
+
 			default:
 				trace("doesn't work with: " + bulletType);
 		}
@@ -92,15 +128,15 @@ class Bullet extends Sprite
 				moveAtAngle(12, someInput * 57.3);
 				removeIfOffscreen();
 			case 'houseMissile':
-				if (tick > 300)
+				damage = 3;
+				if (tick > 100)
 				{
-					y -= (tick - 300) * 2;
-					damage = 2;
+					y -= (tick - 100) * 2;
 				}
 				else
 				{
+					y = 700 - tick / 4;
 					damage = 0;
-					y = 720 - tick / 4;
 				}
 				removeIfOffscreen();
 			case 'diamond':
@@ -111,18 +147,62 @@ class Bullet extends Sprite
 				x += 20;
 				removeIfOffscreen();
 			case 'skipCard':
-				moveAtAngle(10, someInput);
-				angle = someInput;
-				if (alpha <= 0)
-					kill();
-				alpha = 1 - ((tick - 20) / 10);
+				x += 10;
 				removeIfOffscreen();
 			case 'plus2Card':
 				moveAtAngle(10, someInput);
-				angle = someInput;
+				angle = someInput - 90;
 				removeIfOffscreen();
+			case 'lilLazer':
+				var d = 5;
+				switch (someInput)
+				{
+					case 0:
+						y += d;
+						angle = 90;
+					case 1:
+						y -= d;
+						angle = -90;
+				}
+				removeIfOffscreen();
+			case 'longLazer':
+				x += 10;
+				removeIfOffscreen();
+			case 'bigLazer':
+				x += 5;
+				if (tick < 10 || tick > 20)
+				{
+					alpha = 0.5;
+					damage = 0;
+				}
+				else
+				{
+					alpha = 1;
+					damage = 1;
+				}
+				removeIfOffscreen();
+			case 'candy':
+				moveAtAngle(10, someInput);
+				if (alpha <= 0)
+					kill();
+				alpha = 1 - ((tick - 20) / 3);
+				removeIfOffscreen();
+			case 'gummi':
+				var d = 10;
+				x += d;
+				y += someInput;
+				someInput -= 1;
+				if (y < -200)
+					kill();
+			case 'spearmint':
+				var d = 10;
+				x += d;
+				y += someInput;
+				someInput += 1;
+				if (y > 1000)
+					kill();
 		}
-		tick++;
+		tick += elapsed * 10;
 	}
 
 	function removeIfOffscreen(?x1 = -20, ?x2 = 1500, ?y1 = -200, ?y2 = 1000)

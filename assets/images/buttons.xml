@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="buttons.png">
+	<!-- Created with Adobe Animate version 21.0.6.41649 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="credits 10000" x="0" y="0" width="1070" height="670"/>
+	<SubTexture name="credits 20000" x="1070" y="0" width="1070" height="670"/>
+	<SubTexture name="main menu 10000" x="2140" y="0" width="1070" height="670"/>
+	<SubTexture name="main menu 20000" x="0" y="670" width="1070" height="670"/>
+	<SubTexture name="play 10000" x="1070" y="670" width="1070" height="670"/>
+	<SubTexture name="play 20000" x="2140" y="670" width="1070" height="670"/>
+	<SubTexture name="resume 10000" x="0" y="1340" width="1070" height="670"/>
+	<SubTexture name="resume 20000" x="1070" y="1340" width="1070" height="670"/>
+</TextureAtlas>

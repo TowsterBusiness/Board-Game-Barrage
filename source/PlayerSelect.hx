@@ -12,6 +12,7 @@ class PlayerSelect extends FlxState
 {
 	var characterList = ['Catterry', 'Wildcard', 'Lolli', 'MonopolyBoy', 'Thimble', 'MrGreen', 'YahtZ'];
 	var characters:FlxTypedSpriteGroup<FlxSprite>;
+	var locks:FlxTypedSpriteGroup<FlxSprite>;
 	var characterPointer = 0;
 
 	var border:FlxSprite;
@@ -29,6 +30,9 @@ class PlayerSelect extends FlxState
 		characters = new FlxTypedSpriteGroup(-117, -247, characterList.length);
 		characters.updateHitbox();
 		add(characters);
+		locks = new FlxTypedSpriteGroup(-117, -247, characterList.length);
+		locks.updateHitbox();
+		add(locks);
 		var offset = 0;
 		for (name in characterList)
 		{
@@ -36,6 +40,15 @@ class PlayerSelect extends FlxState
 			tempSprite.scale.set(0.4, 0.4);
 			offset += 300;
 			characters.add(tempSprite);
+		}
+
+		offset = 900;
+		for (index in 0...4)
+		{
+			var tempSprite:FlxSprite = new FlxSprite(offset, 0).loadGraphic(Paths.filePath('playerSelect/lock', PNG));
+			tempSprite.scale.set(0.4, 0.4);
+			offset += 300;
+			locks.add(tempSprite);
 		}
 		characters.members[0].loadGraphic(Paths.filePath('playerSelect/Catterry_Color', PNG));
 
@@ -61,11 +74,13 @@ class PlayerSelect extends FlxState
 		{
 			characterPointer++;
 			FlxTween.tween(characters, {x: (characterPointer * -300) - 117}, 0.5, {ease: FlxEase.quadOut});
+			FlxTween.tween(locks, {x: (characterPointer * -300) - 117}, 0.5, {ease: FlxEase.quadOut});
 		}
 		else if ((FlxG.keys.justPressed.A || FlxG.keys.justPressed.LEFT) && characterPointer > 0)
 		{
 			characterPointer--;
 			FlxTween.tween(characters, {x: (characterPointer * -300) - 117}, 0.5, {ease: FlxEase.quadOut});
+			FlxTween.tween(locks, {x: (characterPointer * -300) - 117}, 0.5, {ease: FlxEase.quadOut});
 		}
 
 		if (FlxG.keys.anyJustPressed([D, RIGHT, A, LEFT]))

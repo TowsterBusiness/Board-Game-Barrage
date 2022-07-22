@@ -12,23 +12,19 @@ class BruhButton extends FlxSprite
 	{
 		super(x, y);
 		this.spriteId = spriteId;
-		switch (spriteId)
-		{
-			case 'play' | 'credits':
-				loadGraphic(Paths.filePath('titleScreen/TitleScreenButtons', PNG), true, 1000, 600);
-				animation.add('credits-color', [0], 1, true);
-				animation.add('play-color', [1], 1, true);
-				animation.add('credits-gray', [2], 1, true);
-				animation.add('play-gray', [3], 1, true);
-			case 'resume' | 'mainMenu':
-				loadGraphic(Paths.filePath('PauseMenu', PNG), true, 1000, 600);
-				animation.add('resume-gray', [0], 1, true);
-				animation.add('resume-color', [1], 1, true);
-				animation.add('mainMenu-color', [2], 1, true);
-				animation.add('mainMenu-gray', [3], 1, true);
-		}
-		animation.play(spriteId + '-gray');
 
+		frames = Paths.getAnimation('buttons');
+
+		animation.addByPrefix('credits-gray', 'credits 1', 1, true);
+		animation.addByPrefix('credits-color', 'credits 2', 1, true);
+		animation.addByPrefix('mainMenu-gray', 'main menu 1', 1, true);
+		animation.addByPrefix('mainMenu-color', 'main menu 2', 1, true);
+		animation.addByPrefix('resume-gray', 'resume 1', 1, true);
+		animation.addByPrefix('resume-color', 'resume 2', 1, true);
+		animation.addByPrefix('play-gray', 'play 1', 1, true);
+		animation.addByPrefix('play-color', 'play 2', 1, true);
+
+		animation.play(spriteId + '-gray');
 		setGraphicSize(Math.floor(1000 * scale1), Math.floor(600 * scale1));
 		updateHitbox();
 	}

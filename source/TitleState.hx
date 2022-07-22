@@ -16,6 +16,10 @@ class TitleState extends FlxState
 
 	var playButton:BruhButton;
 	var creditsButton:BruhButton;
+
+	var creditsPannel:TitlePannelSprite;
+	var tutorialPannel:TitlePannelSprite;
+
 	var titleText:FlxSprite;
 
 	var bgChars:FlxTypedSpriteGroup<TitleCharacters>;
@@ -55,9 +59,24 @@ class TitleState extends FlxState
 		creditsButton = new BruhButton(220, 450, 'credits', 0.4);
 
 		playButton.screenCenter(X);
+		creditsButton.screenCenter(X);
+
+		playButton.x += 250;
+		creditsButton.x -= 250;
+
+		creditsPannel = new TitlePannelSprite('credits');
+		tutorialPannel = new TitlePannelSprite('tutorial');
+		if (FloatingVarables.firstTime)
+		{
+			tutorialPannel.bringDown();
+			FloatingVarables.firstTime = false;
+		}
 
 		add(playButton);
+		add(creditsButton);
 		add(titleText);
+		add(creditsPannel);
+		add(tutorialPannel);
 		add(transitionBox);
 	}
 
@@ -77,8 +96,13 @@ class TitleState extends FlxState
 		}
 		if (creditsButton.updateButton())
 		{
-			// Doesn't work lmao
-			// FlxG.switchState(new Credits());
+			creditsPannel.bringDown();
+		}
+
+		if (FlxG.keys.anyJustPressed([ESCAPE, ENTER]))
+		{
+			creditsPannel.putUp();
+			tutorialPannel.putUp();
 		}
 	}
 }

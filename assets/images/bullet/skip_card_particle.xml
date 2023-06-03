@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="skip_card_particle.png">
+	<!-- Created with Adobe Animate version 21.0.6.41649 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="skip card particle0000" x="0" y="0" width="79" height="51" frameX="-1" frameY="0" frameWidth="81" frameHeight="53"/>
+	<SubTexture name="skip card particle0001" x="79" y="0" width="79" height="51" frameX="0" frameY="-1" frameWidth="81" frameHeight="53"/>
+	<SubTexture name="skip card particle0002" x="158" y="0" width="79" height="51" frameX="-2" frameY="-2" frameWidth="81" frameHeight="53"/>
+</TextureAtlas>

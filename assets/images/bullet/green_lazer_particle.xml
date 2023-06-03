@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="green_lazer_particle.png">
+	<!-- Created with Adobe Animate version 21.0.6.41649 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="green lazer particle0000" x="0" y="0" width="124" height="172"/>
+	<SubTexture name="green lazer particle0001" x="124" y="0" width="124" height="172"/>
+	<SubTexture name="green lazer particle0002" x="248" y="0" width="124" height="172"/>
+</TextureAtlas>

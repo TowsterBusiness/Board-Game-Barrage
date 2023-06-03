@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="peppermint_particle.png">
+	<!-- Created with Adobe Animate version 21.0.6.41649 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="peppermint particle0000" x="0" y="0" width="60" height="57" frameX="0" frameY="-1" frameWidth="60" frameHeight="60"/>
+	<SubTexture name="peppermint particle0001" x="60" y="0" width="59" height="59" frameX="0" frameY="-1" frameWidth="60" frameHeight="60"/>
+	<SubTexture name="peppermint particle0002" x="119" y="0" width="57" height="59" frameX="-1" frameY="0" frameWidth="60" frameHeight="60"/>
+	<SubTexture name="peppermint particle0003" x="176" y="0" width="59" height="58" frameX="0" frameY="0" frameWidth="60" frameHeight="60"/>
+	<SubTexture name="peppermint particle0004" x="0" y="59" width="60" height="57" frameX="0" frameY="-1" frameWidth="60" frameHeight="60"/>
+	<SubTexture name="peppermint particle0005" x="60" y="59" width="59" height="59" frameX="-1" frameY="0" frameWidth="60" frameHeight="60"/>
+	<SubTexture name="peppermint particle0006" x="119" y="59" width="58" height="60" frameX="-1" frameY="0" frameWidth="60" frameHeight="60"/>
+	<SubTexture name="peppermint particle0007" x="177" y="59" width="60" height="58" frameX="0" frameY="-1" frameWidth="60" frameHeight="60"/>
+	<SubTexture name="peppermint particle0008" x="0" y="0" width="60" height="57" frameX="0" frameY="-1" frameWidth="60" frameHeight="60"/>
+</TextureAtlas>
